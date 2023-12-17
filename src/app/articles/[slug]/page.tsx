@@ -38,7 +38,7 @@ const customH2 = ({ ...props }) => {
     <li>
       <a
         href={`#${props.children}`}
-        className="inline-flex items-center py-1 text-base text-stone-700 duration-300 hover:text-stone-500 dark:text-stone-100 dark:hover:text-stone-300 md:text-lg"
+        className="inline-flex items-center py-1 text-base text-gray-900 duration-300 hover:text-stone-500 dark:text-stone-100 dark:hover:text-stone-300 md:text-lg"
       >
         <HiLink className="mr-2" />
         {props.children}
@@ -63,7 +63,7 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props) => {
   const imageUrl = article?.imageUrl;
 
   return (
-    <>
+    <div className="text-gray-900 bg-gray-100 dark:bg-slate-900 dark:text-slate-300">
       <Header />
       <div>
         <div className="h-10 overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-auto">
@@ -117,7 +117,7 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props) => {
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 };
 
