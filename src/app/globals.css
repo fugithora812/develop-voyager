@@ -25,3 +25,106 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* 
+*
+* Markdown変換用のスタイル定義。
+* ref: https://zenn.dev/hayato94087/articles/07f238b686d0a3
+*
+*/
+.markdown {
+  @apply dark:text-slate-300 text-gray-900 leading-normal break-words;
+}
+
+.markdown > * + * {
+  @apply dark:text-slate-300 mt-0 mb-4;
+}
+
+.markdown li + li {
+  @apply dark:text-slate-300 mt-1;
+}
+
+.markdown li > p + p {
+  @apply dark:text-slate-300 mt-6;
+}
+
+.markdown strong {
+  @apply dark:text-slate-300 font-semibold;
+}
+
+.markdown a {
+  @apply text-blue-600 font-semibold;
+}
+
+.markdown strong a {
+  @apply dark:text-slate-300 font-bold;
+}
+
+.markdown h1 {
+  @apply dark:text-slate-300 leading-tight border-b text-4xl font-semibold mb-4 mt-6 pb-2;
+}
+
+.markdown h2 {
+  @apply dark:text-slate-300 leading-tight border-b text-2xl font-semibold mb-4 mt-6 pb-2;
+}
+
+.markdown h3 {
+  @apply dark:text-slate-300 leading-snug text-lg font-semibold mb-4 mt-6;
+}
+
+.markdown h4 {
+  @apply dark:text-slate-300 leading-none text-base font-semibold mb-4 mt-6;
+}
+
+.markdown h5 {
+  @apply dark:text-slate-300 leading-tight text-sm font-semibold mb-4 mt-6;
+}
+
+.markdown h6 {
+  @apply dark:text-slate-300 leading-tight text-sm font-semibold text-gray-600 mb-4 mt-6;
+}
+
+.markdown blockquote {
+  @apply dark:text-slate-300 text-base border-l-4 border-gray-300 pl-4 pr-4 text-gray-600;
+}
+
+.markdown code {
+  @apply dark:text-slate-300 font-mono text-sm inline bg-gray-200 rounded px-1 py-5;
+}
+
+.markdown pre {
+  @apply dark:text-slate-300 bg-gray-100 rounded p-4;
+}
+
+.markdown pre code {
+  @apply dark:text-slate-300 block bg-transparent p-0 overflow-visible rounded-none;
+}
+
+.markdown ul {
+  @apply dark:text-slate-300 text-base pl-8 list-disc;
+}
+
+.markdown ol {
+  @apply dark:text-slate-300 text-base pl-8 list-decimal;
+}
+
+.markdown kbd {
+  @apply dark:text-slate-300 text-xs inline-block rounded border px-1 py-5 align-middle font-normal font-mono shadow;
+}
+
+.markdown table {
+  @apply dark:text-slate-300 text-base border-gray-600;
+}
+
+.markdown th {
+  @apply dark:text-slate-300 border py-1 px-3;
+}
+
+.markdown td {
+  @apply dark:text-slate-300 border py-1 px-3;
+}
+
+/* Override pygments style background color. */
+.markdown .highlight pre {
+  @apply dark:text-slate-300 bg-gray-100 !important;
+}
