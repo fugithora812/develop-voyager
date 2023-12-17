@@ -38,7 +38,7 @@ body {
 }
 
 .markdown > * + * {
-  @apply dark:text-slate-300 mt-0 mx-10 mb-4 md:w-2/3;
+  @apply dark:text-slate-300 mt-0 mb-4 ;
 }
 
 .markdown li + li {
@@ -62,11 +62,11 @@ body {
 }
 
 .markdown h1 {
-  @apply dark:text-slate-300 leading-tight border-b text-4xl font-semibold mb-4 mt-6 mx-10 pb-2 md:w-2/3;
+  @apply dark:text-slate-300 leading-tight border-b text-4xl font-semibold mb-4 mt-6  pb-2 text-center;
 }
 
 .markdown h2 {
-  @apply dark:text-slate-300 leading-tight border-b text-2xl font-semibold mb-4 mt-6 pb-2 md:w-2/3;
+  @apply dark:text-slate-300 leading-tight border-b text-2xl font-semibold mb-4 mt-6 pb-2;
 }
 
 .markdown h3 {
