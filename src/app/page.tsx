@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import Header from './atoms/header';
 import Footer from './atoms/footer';
@@ -42,15 +42,16 @@ const Home = async () => {
               </div>
               <div className="flex flex-wrap items-center min-[1170px]:justify-between gap-1 mx-40">
                 {metadata.articles.map((article: ArticleMetadata) => (
-                  <ArticleCard
-                    key={article.id}
-                    imageUrl={article.imageUrl}
-                    category={article.category}
-                    title={article.title}
-                    description={article.description}
-                    href={article.href}
-                    latest={isLatestArticle(article)}
-                  />
+                  <Suspense key={article.id} fallback={<span className="loading loading-dots loading-lg" />}>
+                    <ArticleCard
+                      imageUrl={article.imageUrl}
+                      category={article.category}
+                      title={article.title}
+                      description={article.description}
+                      href={article.href}
+                      latest={isLatestArticle(article)}
+                    />
+                  </Suspense>
                 ))}
               </div>
             </div>

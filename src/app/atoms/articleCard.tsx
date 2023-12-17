@@ -13,7 +13,7 @@ interface Props {
 
 const ArticleCard: NextPage<Props> = ({ imageUrl, category, title, description, href, latest }: Props) => (
   <div
-    className={`${latest ? 'w-[25rem] min-[1170px]:w-full' : 'w-[25rem]'}
+    className={`${latest ? 'w-[49%] min-[1170px]:w-full' : 'w-[49%]'}
   flex flex-col items-center my-6 space-y-4 md:space-x-4 md:space-y-0 md:flex-row`}
   >
     <div className="m-auto overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-full">
