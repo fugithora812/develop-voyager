@@ -1,7 +1,6 @@
 import React from 'react';
 import { HiLink } from 'react-icons/hi';
 import { NextPage } from 'next';
-import NextImage from 'next/image';
 import path from 'path';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -21,9 +20,6 @@ import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
 import markdown from 'react-syntax-highlighter/dist/cjs/languages/prism/markdown';
 import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
 import lua from 'react-syntax-highlighter/dist/cjs/languages/prism/lua';
-import Header from '@/app/atoms/header';
-import Footer from '@/app/atoms/footer';
-
 SyntaxHighlighter.registerLanguage('tsx', tsx);
 SyntaxHighlighter.registerLanguage('typescript', typescript);
 SyntaxHighlighter.registerLanguage('scss', scss);
@@ -31,6 +27,11 @@ SyntaxHighlighter.registerLanguage('bash', bash);
 SyntaxHighlighter.registerLanguage('markdown', markdown);
 SyntaxHighlighter.registerLanguage('json', json);
 SyntaxHighlighter.registerLanguage('lua', lua);
+/* end of import languages for syntax highlighting */
+
+import Header from '@/app/atoms/header';
+import Footer from '@/app/atoms/footer';
+import fetchArticleMetadata, { ArticleMetadata } from '@/app/lib/fetchArticleMetadata';
 
 const customH2 = ({ ...props }) => {
   return (
@@ -57,6 +58,10 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props) => {
   const pathToContent = path.join(process.cwd(), 'doc', 'articles', `${slug}.md`);
   const content = await getMarkdownData(pathToContent);
 
+  const metadata = fetchArticleMetadata();
+  const article = metadata.articles.find((article: ArticleMetadata) => article.href === `/articles/${slug}`);
+  const imageUrl = article?.imageUrl;
+
   return (
     <>
       <Header />
@@ -64,7 +69,7 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props) => {
         <div className="h-10 overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-auto">
           {/* eslint-disable-next-line */}
           <img
-            src="https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=600&h=750"
+            src={imageUrl}
             loading="lazy"
             alt="Photo by Martin Sanchez"
             className="h-60 w-full object-cover object-center"
@@ -74,9 +79,9 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props) => {
 
       <div className="grid gap-8 md:grid-cols-[20%_60%] lg:gap-12">
         <ol className="p-2 md:p-4 ml-2 md:col-start-1">
-          <h2 className="underline">🖌️ Table of Contents</h2>
+          <h2 className="underline sticky top-16">🖌️ Table of Contents</h2>
           <ReactMarkdown
-            className="md:prose-md dark:prose-invert col-start-1"
+            className="md:prose-md dark:prose-invert col-start-1 sticky top-[88px]"
             allowedElements={['h2']}
             components={components}
           >
