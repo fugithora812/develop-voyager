@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { type NextPage } from 'next';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
@@ -51,12 +51,12 @@ const Header: NextPage = (): React.ReactElement | null => {
         </div>
       </div>
       <div className="navbar-center">
-        <Link href="/" className="btn btn-ghost text-xl text-gray-900 dark:text-slate-300">
+        <Link href="/" className="btn btn-ghost text-[40px] text-gray-900 dark:text-slate-300 font-[consolas]">
           TweetTech
         </Link>
       </div>
       <div className="navbar-end">
-        <label className="flex cursor-pointer gap-2">
+        <label className="mr-2 flex cursor-pointer gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -92,6 +92,14 @@ const Header: NextPage = (): React.ReactElement | null => {
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </label>
+        <a href="https://www.buymeacoffee.com/playdrumsj0" target="_blank" rel="noreferrer">
+          {/* eslint-disable-next-line */}
+          <img
+            src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+            alt="Buy Me A Coffee"
+            className="h-[50px] w-[217px]"
+          />
+        </a>
       </div>
     </div>
   );
