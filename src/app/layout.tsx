@@ -17,9 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
-      <Suspense fallback={<span className="loading loading-dots loading-lg" />}>
-        <body className={inter.className}>{children}</body>
-      </Suspense>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
