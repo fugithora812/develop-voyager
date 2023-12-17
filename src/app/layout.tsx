@@ -1,12 +1,13 @@
-import { Suspense } from 'react';
+import React from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import React from 'react';
 
-// @ts-ignore
-import Favicon from '/public/favicon.ico';
-import './globals.css';
 import { Providers } from './components/Providers';
+
+import './globals.css';
+
+// eslint-disable-next-line
+import Favicon from "/public/favicon.ico";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   icons: [{ rel: 'icon', url: Favicon.src }],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const RootLayout = ({ children }: { children: React.ReactNode }): React.ReactElement => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
@@ -24,4 +25,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

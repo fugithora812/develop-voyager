@@ -1,14 +1,14 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { NextPage } from 'next';
+import React, { useEffect,useState } from 'react';
+import { type NextPage } from 'next';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 
-const Header: NextPage = () => {
+const Header: NextPage = (): React.ReactElement | null => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  const handleSetTheme = () => {
+  const handleSetTheme = (): void => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 

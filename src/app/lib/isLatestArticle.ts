@@ -1,4 +1,4 @@
-import { ArticleMetadata, fetchArticleMetadataSync } from './fetchArticleMetadata';
+import { type ArticleMetadata, fetchArticleMetadataSync } from './fetchArticleMetadata';
 
 const isLatestArticle = (article: ArticleMetadata): boolean => {
   const metadata = fetchArticleMetadataSync();
