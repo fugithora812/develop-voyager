@@ -16,14 +16,18 @@ const Home = async (): Promise<React.ReactElement> => {
         <div className="flex items-start justify-between">
           <div className="flex flex-col w-full min-[1170px]:space-y-4">
             <div className="h-fit px-4 pb-24 min-[1170px]:px-6">
-              <h1 className="text-4xl font-semibold text-gray-800 dark:text-white text-center">Welcome To TweetTech</h1>
-              <h2 className="text-gray-400 text-md text-center">Here&#x27;s List of Articles</h2>
+              <h1 className="text-4xl font-semibold text-gray-800 dark:text-slate-300 text-center">
+                Welcome To TweetTech
+              </h1>
+              <h2 className="text-gray-600 dark:text-gray-400 text-md text-center font-[consolas]">
+                Here&#x27;s List of Articles
+              </h2>
               <br />
               <div className="flex items-center space-x-4 mx-40">
                 <div className="tooltip" data-tip="This is unavailable for now.">
                   <button
                     disabled
-                    className="flex items-center px-4 py-2 text-gray-400 border border-gray-300 rounded-r-full rounded-tl-sm rounded-bl-full text-md"
+                    className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 rounded-r-full rounded-tl-sm rounded-bl-full text-md"
                   >
                     Select Category
                     <svg
@@ -38,7 +42,7 @@ const Home = async (): Promise<React.ReactElement> => {
                     </svg>
                   </button>
                 </div>
-                <span className="text-sm text-gray-400">Displayed All Articles Now.</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">Displayed All Articles Now.</span>
               </div>
               <div className="flex flex-wrap items-center min-[1170px]:justify-between gap-1 mx-40">
                 {metadata.articles.map((article: ArticleMetadata) => (
