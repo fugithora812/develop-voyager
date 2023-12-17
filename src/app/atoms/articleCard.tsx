@@ -13,7 +13,7 @@ interface Props {
 
 const ArticleCard: NextPage<Props> = ({ imageUrl, category, title, description, href, latest }: Props) => (
   <div
-    className={`${latest ? 'w-[25rem] md:w-full' : 'w-[25rem]'}
+    className={`${latest ? 'w-[49%] min-[1170px]:w-full' : 'w-[49%]'}
   flex flex-col items-center my-6 space-y-4 md:space-x-4 md:space-y-0 md:flex-row`}
   >
     <div className="m-auto overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-full">
@@ -21,7 +21,10 @@ const ArticleCard: NextPage<Props> = ({ imageUrl, category, title, description, 
         {/* eslint-disable-next-line */}
         <img alt="blog photo" src={imageUrl} className="object-cover w-full max-h-40" />
         <div className="w-100 p-4 bg-white dark:bg-gray-800 break-words">
-          <p className="font-medium text-indigo-500 text-md">{category}</p>
+          <div className="flex items-start mb-3">
+            <div className="badge badge-primary text-md">{category}</div>
+            {latest && <div className="badge badge-secondary ml-1">Latest</div>}
+          </div>
           <p className="truncate mb-2 text-xl font-medium text-gray-800 dark:text-white">{title}</p>
           <p className="truncate font-light text-gray-400 dark:text-gray-300 text-md ">{description}</p>
         </div>

@@ -34,8 +34,7 @@ const Header: NextPage = () => (
         TweetTech
       </Link>
     </div>
-    <div className="navbar-end">
-    </div>
+    <div className="navbar-end"></div>
   </div>
 );
 
