@@ -76,10 +76,9 @@
     "simple-import-sort"
   ],
   "ignorePatterns": [
-    "vite-env.d.ts",
     "*.config.ts",
-    "vitest.setup.ts",
-    "firebase.ts"
+    "*.config.js",
+    "next-env.d.ts"
   ],
   "rules": {
     "react/jsx-boolean-value": "error",
