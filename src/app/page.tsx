@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Header from './atoms/header';
-import Footer from './atoms/footer';
 import ArticleCard from './atoms/articleCard';
-import fetchArticleMetadata, { ArticleMetadata } from './lib/fetchArticleMetadata';
+import Footer from './atoms/footer';
+import Header from './atoms/header';
+import fetchArticleMetadata, { type ArticleMetadata } from './lib/fetchArticleMetadata';
 import isLatestArticle from './lib/isLatestArticle';
 
-const Home = async () => {
+const Home = async (): Promise<React.ReactElement> => {
   const metadata = await fetchArticleMetadata();
 
   return (

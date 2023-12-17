@@ -1,5 +1,5 @@
 import React from 'react';
-import { NextPage } from 'next';
+import { type NextPage } from 'next';
 
 const Footer: NextPage = () => (
   <footer className="footer items-center p-4 bg-neutral text-neutral-content dark:bg-inherit">

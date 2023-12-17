@@ -1,13 +1,12 @@
 import React from 'react';
 import { HiLink } from 'react-icons/hi';
-import { NextPage } from 'next';
-import path from 'path';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { getMarkdownData } from '../../lib/markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-
+import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
+import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
+import lua from 'react-syntax-highlighter/dist/cjs/languages/prism/lua';
+import markdown from 'react-syntax-highlighter/dist/cjs/languages/prism/markdown';
+import scss from 'react-syntax-highlighter/dist/cjs/languages/prism/scss';
 /*
  * import languages for syntax highlighting.
  * ref: https://biplobsd.me/blogs/view/syntax-highlight-code-in-NextJS-tailwindcss-daisyui.md
@@ -15,11 +14,17 @@ import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
  */
 import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
 import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
-import scss from 'react-syntax-highlighter/dist/cjs/languages/prism/scss';
-import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
-import markdown from 'react-syntax-highlighter/dist/cjs/languages/prism/markdown';
-import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
-import lua from 'react-syntax-highlighter/dist/cjs/languages/prism/lua';
+import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { type NextPage } from 'next';
+import path from 'path';
+import remarkGfm from 'remark-gfm';
+
+import { getMarkdownData } from '../../lib/markdown';
+
+/* end of import languages for syntax highlighting */
+import Footer from '@/app/atoms/footer';
+import Header from '@/app/atoms/header';
+import fetchArticleMetadata, { type ArticleMetadata } from '@/app/lib/fetchArticleMetadata';
 SyntaxHighlighter.registerLanguage('tsx', tsx);
 SyntaxHighlighter.registerLanguage('typescript', typescript);
 SyntaxHighlighter.registerLanguage('scss', scss);
@@ -27,13 +32,8 @@ SyntaxHighlighter.registerLanguage('bash', bash);
 SyntaxHighlighter.registerLanguage('markdown', markdown);
 SyntaxHighlighter.registerLanguage('json', json);
 SyntaxHighlighter.registerLanguage('lua', lua);
-/* end of import languages for syntax highlighting */
 
-import Header from '@/app/atoms/header';
-import Footer from '@/app/atoms/footer';
-import fetchArticleMetadata, { ArticleMetadata } from '@/app/lib/fetchArticleMetadata';
-
-const customH2 = ({ ...props }) => {
+const customH2 = ({ ...props }): React.ReactElement => {
   return (
     <li>
       <a
@@ -53,7 +53,7 @@ interface Props {
   params: { slug: string };
 }
 
-const ArticlePage: NextPage<Props> = async ({ params }: Props) => {
+const ArticlePage: NextPage<Props> = async ({ params }: Props): Promise<React.ReactElement> => {
   const { slug } = params;
   const pathToContent = path.join(process.cwd(), 'doc', 'articles', `${slug}.md`);
   const content = await getMarkdownData(pathToContent);
@@ -92,17 +92,17 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props) => {
           remarkPlugins={[remarkGfm]}
           className="markdown col-start-2"
           components={{
-            // @ts-ignore
+            // @ts-expect-error eslint-disable-this-line
             code({ inline, className, ...props }) {
-              const hasLang = /language-(\w+)/.exec(className || '');
-              return !inline && hasLang ? (
+              const hasLang = /language-(\w+)/.exec(className ?? '');
+              return typeof inline !== 'undefined' && hasLang !== null ? (
                 <SyntaxHighlighter
                   style={oneDark}
                   language={hasLang[1]}
                   PreTag="div"
                   className="mockup-code scrollbar-thin scrollbar-track-base-content/5 scrollbar-thumb-base-content/40 scrollbar-track-rounded-md scrollbar-thumb-rounded m-0"
-                  showLineNumbers={true}
-                  useInlineStyles={true}
+                  showLineNumbers
+                  useInlineStyles
                 >
                   {String(props.children).replace(/\n$/, '')}
                 </SyntaxHighlighter>
