@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "format:prettier": "prettier --check './{bin,lib,src,e2e}/**/*.{ts,tsx}'",
-    "fix:prettier": "prettier --write './{bin,lib,src,e2e}/**/*.{ts,tsx}'"
+    "fix:prettier": "prettier --write './{bin,lib,src,e2e}/**/*.{ts,tsx}'",
+    "check:eslint": "eslint . --ext ts,tsx --max-warnings=0",
+    "fix:eslint": "eslint . --ext ts,tsx --max-warnings=0 --fix"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.4.0",
