@@ -11,7 +11,14 @@ interface ArticleMetadata {
   date: string;
 }
 
-const fetchArticleMetadata = (): { articles: ArticleMetadata[] } => {
+const fetchArticleMetadata = async (): Promise<{ articles: ArticleMetadata[] }> => {
+  const pathToMetadata = path.join(process.cwd(), 'doc', 'articleMetadata', 'metadata.json');
+  const metadata = JSON.parse(await fs.promises.readFile(pathToMetadata, 'utf8'));
+
+  return metadata;
+};
+
+const fetchArticleMetadataSync = (): { articles: ArticleMetadata[] } => {
   const pathToMetadata = path.join(process.cwd(), 'doc', 'articleMetadata', 'metadata.json');
   const metadata = JSON.parse(fs.readFileSync(pathToMetadata, 'utf8'));
 
@@ -20,3 +27,4 @@ const fetchArticleMetadata = (): { articles: ArticleMetadata[] } => {
 
 export default fetchArticleMetadata;
 export type { ArticleMetadata };
+export { fetchArticleMetadataSync };
