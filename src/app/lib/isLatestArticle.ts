@@ -1,7 +1,7 @@
-import fetchArticleMetadata, { ArticleMetadata } from './fetchArticleMetadata';
+import { ArticleMetadata, fetchArticleMetadataSync } from './fetchArticleMetadata';
 
 const isLatestArticle = (article: ArticleMetadata): boolean => {
-  const metadata = fetchArticleMetadata();
+  const metadata = fetchArticleMetadataSync();
   const articleDates = metadata.articles.map((a: ArticleMetadata) => new Date(a.date));
   const mostRecentDate = articleDates.reduce((a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b));
 

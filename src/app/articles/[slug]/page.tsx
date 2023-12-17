@@ -58,7 +58,7 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props) => {
   const pathToContent = path.join(process.cwd(), 'doc', 'articles', `${slug}.md`);
   const content = await getMarkdownData(pathToContent);
 
-  const metadata = fetchArticleMetadata();
+  const metadata = await fetchArticleMetadata();
   const article = metadata.articles.find((article: ArticleMetadata) => article.href === `/articles/${slug}`);
   const imageUrl = article?.imageUrl;
 

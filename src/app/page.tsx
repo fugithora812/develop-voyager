@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 
 import Header from './atoms/header';
 import Footer from './atoms/footer';
@@ -7,7 +7,7 @@ import fetchArticleMetadata, { ArticleMetadata } from './lib/fetchArticleMetadat
 import isLatestArticle from './lib/isLatestArticle';
 
 const Home = async () => {
-  const metadata = fetchArticleMetadata();
+  const metadata = await fetchArticleMetadata();
 
   return (
     <>
@@ -42,16 +42,15 @@ const Home = async () => {
               </div>
               <div className="flex flex-wrap items-center min-[1170px]:justify-between gap-1 mx-40">
                 {metadata.articles.map((article: ArticleMetadata) => (
-                  <Suspense key={article.id} fallback={<span className="loading loading-dots loading-lg" />}>
-                    <ArticleCard
-                      imageUrl={article.imageUrl}
-                      category={article.category}
-                      title={article.title}
-                      description={article.description}
-                      href={article.href}
-                      latest={isLatestArticle(article)}
-                    />
-                  </Suspense>
+                  <ArticleCard
+                    key={article.href}
+                    imageUrl={article.imageUrl}
+                    category={article.category}
+                    title={article.title}
+                    description={article.description}
+                    href={article.href}
+                    latest={isLatestArticle(article)}
+                  />
                 ))}
               </div>
             </div>
