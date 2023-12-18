@@ -80,7 +80,8 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props): Promise<React.Re
 
       <div className="grid gap-8 md:grid-cols-[20%_60%] lg:gap-12">
         <ol className="p-2 md:p-4 ml-2 md:col-start-1">
-          <h2 className="underline sticky top-16">🖌️ Table of Contents</h2>
+          <h2 className="underline sticky top-16 max-[1010px]:hidden">🖌️ Table of Contents</h2>
+          <h2 className="underline sticky top-16 min-[1010px]:hidden">🖌️ TOC</h2>
           <ReactMarkdown
             className="md:prose-md dark:prose-invert col-start-1 sticky top-[88px]"
             allowedElements={['h2']}
