@@ -25,6 +25,7 @@ import { getMarkdownData } from '../../lib/markdown';
 import Footer from '@/app/atoms/footer';
 import Header from '@/app/atoms/header';
 import fetchArticleMetadata, { type ArticleMetadata } from '@/app/lib/fetchArticleMetadata';
+
 SyntaxHighlighter.registerLanguage('tsx', tsx);
 SyntaxHighlighter.registerLanguage('typescript', typescript);
 SyntaxHighlighter.registerLanguage('scss', scss);
