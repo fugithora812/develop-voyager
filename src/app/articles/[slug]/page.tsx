@@ -94,8 +94,10 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props): Promise<React.Re
           components={{
             // @ts-expect-error eslint-disable-this-line
             code({ inline, className, ...props }) {
-              const hasLang = /language-(\w+)/.exec(className ?? '');
-              return typeof inline !== 'undefined' && hasLang !== null ? (
+              // eslint-disable-next-line
+              const hasLang = /language-(\w+)/.exec(className || '');
+              // eslint-disable-next-line
+              return !inline && hasLang ? (
                 <SyntaxHighlighter
                   style={oneDark}
                   language={hasLang[1]}
