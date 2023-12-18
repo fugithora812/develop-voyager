@@ -25,6 +25,7 @@ import { getMarkdownData } from '../../lib/markdown';
 import Footer from '@/app/atoms/footer';
 import Header from '@/app/atoms/header';
 import fetchArticleMetadata, { type ArticleMetadata } from '@/app/lib/fetchArticleMetadata';
+
 SyntaxHighlighter.registerLanguage('tsx', tsx);
 SyntaxHighlighter.registerLanguage('typescript', typescript);
 SyntaxHighlighter.registerLanguage('scss', scss);
@@ -94,8 +95,10 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props): Promise<React.Re
           components={{
             // @ts-expect-error eslint-disable-this-line
             code({ inline, className, ...props }) {
-              const hasLang = /language-(\w+)/.exec(className ?? '');
-              return typeof inline !== 'undefined' && hasLang !== null ? (
+              // eslint-disable-next-line
+              const hasLang = /language-(\w+)/.exec(className || '');
+              // eslint-disable-next-line
+              return !inline && hasLang ? (
                 <SyntaxHighlighter
                   style={oneDark}
                   language={hasLang[1]}
