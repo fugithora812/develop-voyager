@@ -12,8 +12,8 @@ import Favicon from '/public/favicon.ico';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'TweetTech',
-  description: 'TweetTech is a blog about technology, programming, and more.',
+  title: 'DevelopVoyager',
+  description: 'DevelopVoyager is a blog about technology, programming, and more.',
   icons: [{ rel: 'icon', url: Favicon.src }],
 };
 

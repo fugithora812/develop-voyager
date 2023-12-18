@@ -52,7 +52,7 @@ const Header: NextPage = (): React.ReactElement | null => {
       </div>
       <div className="navbar-center">
         <Link href="/" className="btn btn-ghost text-[40px] text-gray-900 dark:text-slate-300 font-[consolas]">
-          TweetTech
+          DevelopVoyager
         </Link>
       </div>
       <div className="navbar-end">
