@@ -7,7 +7,7 @@ import { Providers } from './components/Providers';
 import './globals.css';
 
 // eslint-disable-next-line
-import Favicon from "/public/favicon.ico";
+import Favicon from '/public/favicon.ico';
 
 const inter = Inter({ subsets: ['latin'] });
 

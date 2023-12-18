@@ -23,7 +23,13 @@ const ArticleCard: NextPage<Props> = ({ imageUrl, category, title, description, 
       {isClicked && <span className="loading loading-dots loading-lg absolute inset-x-[50%] inset-y-[60%]" />}
 
       <div className="m-auto overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-full ">
-        <Link href={href} className="w-inherit block h-full" onClick={() => { setIsClicked(true); }}>
+        <Link
+          href={href}
+          className="w-inherit block h-full"
+          onClick={() => {
+            setIsClicked(true);
+          }}
+        >
           {/* eslint-disable-next-line */}
           <img alt="blog photo" src={imageUrl} className="object-cover w-full max-h-40" />
           <div className="w-100 p-4 bg-white dark:bg-gray-800 break-words">
@@ -32,7 +38,7 @@ const ArticleCard: NextPage<Props> = ({ imageUrl, category, title, description, 
               {latest === true && <div className="badge badge-secondary ml-1">Latest</div>}
             </div>
             <p className="truncate mb-2 text-xl font-medium text-gray-800 dark:text-white">{title}</p>
-            <p className="truncate font-light text-gray-400 dark:text-gray-300 text-md ">{description}</p>
+            <p className="truncate font-light text-gray-600 dark:text-gray-400 text-md ">{description}</p>
           </div>
         </Link>
       </div>
