@@ -5,6 +5,7 @@ import Footer from './atoms/footer';
 import Header from './atoms/header';
 import fetchArticleMetadata, { type ArticleMetadata } from './lib/fetchArticleMetadata';
 import isLatestArticle from './lib/isLatestArticle';
+import { metadata as nextMetadata } from './layout';
 
 const Home = async (): Promise<React.ReactElement> => {
   const metadata = await fetchArticleMetadata();
@@ -17,7 +18,7 @@ const Home = async (): Promise<React.ReactElement> => {
           <div className="flex flex-col w-full min-[1170px]:space-y-4">
             <div className="h-fit px-4 pb-24 min-[1170px]:px-6">
               <h1 className="text-4xl font-semibold text-gray-800 dark:text-slate-300 text-center">
-                Welcome To TweetTech
+                Welcome To {`${nextMetadata.title}`}
               </h1>
               <h2 className="text-gray-600 dark:text-gray-400 text-md text-center font-[consolas]">
                 Here&#x27;s List of Articles
