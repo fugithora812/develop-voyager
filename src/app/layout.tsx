@@ -6,16 +6,11 @@ import { Providers } from './components/Providers';
 
 import './globals.css';
 
-// eslint-disable-next-line
-import Favicon from '/public/favicon.ico';
+import { SEO_DEFAULT } from './seo_config';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: 'DevelopVoyager',
-  description: 'DevelopVoyager is a blog about technology, programming, and more.',
-  icons: [{ rel: 'icon', url: Favicon.src }],
-};
+export const metadata: Metadata = SEO_DEFAULT;
 
 const RootLayout = ({ children }: { children: React.ReactNode }): React.ReactElement => {
   return (
