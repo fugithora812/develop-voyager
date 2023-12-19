@@ -17,9 +17,9 @@ const Home = async (): Promise<React.ReactElement> => {
           <div className="flex flex-col w-full min-[1170px]:space-y-4">
             <div className="h-fit px-4 pb-24 min-[1170px]:px-6">
               <h1 className="text-4xl font-semibold text-gray-800 dark:text-slate-300 text-center">
-                Welcome To TweetTech
+                Welcome To DevelopVoyager!
               </h1>
-              <h2 className="text-gray-600 dark:text-gray-400 text-md text-center font-[consolas]">
+              <h2 className="text-gray-600 dark:text-gray-400 text-md text-center font-semibold">
                 Here&#x27;s List of Articles
               </h2>
               <br />
