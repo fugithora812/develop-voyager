@@ -17,7 +17,7 @@ const ArticleCard: NextPage<Props> = ({ imageUrl, category, title, description, 
 
   return (
     <div
-      className={`${latest === true ? 'w-[49%] min-[1170px]:w-full' : 'w-[49%]'}
+      className={`${latest === true ? 'w-full' : 'w-[49%]'}
   flex flex-col items-center my-6 space-y-4 md:space-x-4 md:space-y-0 md:flex-row relative`}
     >
       {isClicked && <span className="loading loading-dots loading-lg absolute inset-x-[50%] inset-y-[60%]" />}
