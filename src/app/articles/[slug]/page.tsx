@@ -3,15 +3,12 @@ import { HiLink } from 'react-icons/hi';
 import ReactMarkdown from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
+import go from 'react-syntax-highlighter/dist/cjs/languages/prism/go';
+import javascript from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
 import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
 import lua from 'react-syntax-highlighter/dist/cjs/languages/prism/lua';
 import markdown from 'react-syntax-highlighter/dist/cjs/languages/prism/markdown';
 import scss from 'react-syntax-highlighter/dist/cjs/languages/prism/scss';
-/*
- * import languages for syntax highlighting.
- * ref: https://biplobsd.me/blogs/view/syntax-highlight-code-in-NextJS-tailwindcss-daisyui.md
- * ref: https://github.com/react-syntax-highlighter/react-syntax-highlighter/blob/master/AVAILABLE_LANGUAGES_PRISM.MD
- */
 import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
 import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
@@ -26,10 +23,17 @@ import Footer from '@/app/atoms/footer';
 import Header from '@/app/atoms/header';
 import fetchArticleMetadata, { type ArticleMetadata } from '@/app/lib/fetchArticleMetadata';
 
+/*
+ * setting languages for syntax highlighting.
+ * ref: https://biplobsd.me/blogs/view/syntax-highlight-code-in-NextJS-tailwindcss-daisyui.md
+ * ref: https://github.com/react-syntax-highlighter/react-syntax-highlighter/blob/master/AVAILABLE_LANGUAGES_PRISM.MD
+ */
 SyntaxHighlighter.registerLanguage('tsx', tsx);
-SyntaxHighlighter.registerLanguage('typescript', typescript);
+SyntaxHighlighter.registerLanguage('ts', typescript);
 SyntaxHighlighter.registerLanguage('scss', scss);
 SyntaxHighlighter.registerLanguage('bash', bash);
+SyntaxHighlighter.registerLanguage('go', go);
+SyntaxHighlighter.registerLanguage('js', javascript);
 SyntaxHighlighter.registerLanguage('markdown', markdown);
 SyntaxHighlighter.registerLanguage('json', json);
 SyntaxHighlighter.registerLanguage('lua', lua);
