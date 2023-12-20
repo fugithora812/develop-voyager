@@ -43,9 +43,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy
 
+同階層に`fugithora812/personal-aws-infra`がcloneされている時、以下のコマンドでデプロイできます。
+
 ```bash
+aws sso login
+make login
+
 # build Next.js Docker image
 make build
 
-make tag && make push
+# deploy to ECR and update Lambda with Terraform
+make deploy
 ```
