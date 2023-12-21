@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const NotFound: NextPage = (): React.ReactElement => {
   return (
-    <div className="bg-gray-100 dark:bg-slate-900 dark:text-slate-300 py-6 sm:py-8 lg:py-12 h-[83vh]">
+    <div className="bg-gray-100 dark:bg-slate-900 dark:text-slate-300 py-6 sm:py-8 lg:py-12">
       <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
         <div className="flex flex-col items-center">
           <p className="mb-4 text-sm font-semibold uppercase text-indigo-500 md:text-base">That’s a 404</p>

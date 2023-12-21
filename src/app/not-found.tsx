@@ -7,11 +7,13 @@ import NotFound from './atoms/NotFound';
 
 const NotFoundPage: NextPage = (): React.ReactElement => {
   return (
-    <>
+    <div className=" bg-gray-100 dark:bg-slate-900 h-screen">
       <Header />
       <NotFound />
-      <Footer />
-    </>
+      <div className="absolute bottom-0 w-full">
+        <Footer />
+      </div>
+    </div>
   );
 };
 
