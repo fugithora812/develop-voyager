@@ -1,6 +1,15 @@
 {
   "articles":[
     {
+      "id": 8,
+      "title": "【Vite】デプロイ環境ごとに参照する環境変数の値を変える",
+      "description": "Viteを利用したプロジェクトでデプロイ環境ごとに参照する値を変更する方法について解説します。",
+      "category": "Vite",
+      "imageUrl": "https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_640.jpg",
+      "href": "/articles/0008_vite_env_variables",
+      "date": "2023-12-12"
+    },
+    {
       "id": 7,
       "title": "【JS】 date-fns-tzでタイムゾーンを考慮しつつ時刻をformatする",
       "description": "JavaScriptで、タイムゾーンを考慮しつつ時刻formatする際にdate-fns-tzが便利だったので紹介します。",
