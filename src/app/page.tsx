@@ -22,8 +22,7 @@ const Home = async (): Promise<React.ReactElement> => {
               <h2 className="text-gray-600 dark:text-gray-400 text-md text-center font-semibold">
                 Here&#x27;s List of Articles
               </h2>
-              <br />
-              <div className="flex items-center space-x-4 mx-40">
+              <div className="flex items-center space-x-4 mx-40 mt-3">
                 <div className="tooltip" data-tip="This is unavailable for now.">
                   <button
                     disabled
