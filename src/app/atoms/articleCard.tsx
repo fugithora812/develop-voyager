@@ -31,7 +31,7 @@ const ArticleCard: NextPage<Props> = ({ imageUrl, category, title, description, 
           }}
         >
           {/* eslint-disable-next-line */}
-          <img alt="blog photo" src={imageUrl} className="object-cover w-full max-h-40" />
+          <img alt="blog photo" src={imageUrl} className="object-cover w-full h-40" />
           <div className="w-100 p-4 bg-white dark:bg-gray-800 break-words">
             <div className="flex items-start mb-3">
               <div className="badge badge-primary text-md">{category}</div>
