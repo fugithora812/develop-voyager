@@ -21,7 +21,7 @@ const Header: NextPage = (): React.ReactElement | null => {
   }
 
   return (
-    <div className="sticky top-0 navbar bg-gray-100 dark:bg-slate-900 z-50">
+    <div className="top-0 navbar bg-gray-100 dark:bg-slate-900 z-50">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle ">
