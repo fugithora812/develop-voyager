@@ -98,6 +98,22 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
                 <code className={className} {...props} />
               );
             },
+            h2({ ...props }) {
+              return (
+                <h2
+                  id={String(props.children).replace(/\n$/, '')}
+                  className="z-50 bg-gray-100 dark:bg-slate-900 hover:bg-slate-700 group"
+                >
+                  <a
+                    href={`#${String(props.children).replace(/\n$/, '')}`}
+                    className="inline-flex items-center py-1 text-base text-gray-900 duration-300 hover:text-stone-500 dark:text-stone-100 dark:hover:text-stone-300 opacity-0 group-hover:opacity-100 ml-[-25px]"
+                  >
+                    <HiLink className="mr-2" />
+                  </a>
+                  {props.children}
+                </h2>
+              );
+            },
           }}
         >
           {content}
