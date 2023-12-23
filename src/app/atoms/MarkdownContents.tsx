@@ -3,6 +3,7 @@ import { HiLink } from 'react-icons/hi';
 import ReactMarkdown from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
+import diff from 'react-syntax-highlighter/dist/cjs/languages/prism/diff';
 import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
 import lua from 'react-syntax-highlighter/dist/cjs/languages/prism/lua';
 import markdown from 'react-syntax-highlighter/dist/cjs/languages/prism/markdown';
@@ -11,7 +12,9 @@ import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
 import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { type NextPage } from 'next';
+import Prism from "prismjs";
 import remarkGfm from 'remark-gfm';
+import markdownToHtml from 'zenn-markdown-html';
 
 import abbreviateString from '@/app/lib/abbreviateString';
 
@@ -27,6 +30,8 @@ SyntaxHighlighter.registerLanguage('bash', bash);
 SyntaxHighlighter.registerLanguage('markdown', markdown);
 SyntaxHighlighter.registerLanguage('json', json);
 SyntaxHighlighter.registerLanguage('lua', lua);
+SyntaxHighlighter.registerLanguage('diff', diff);
+// require("prismjs/plugins/diff-highlight/prism-diff-highlight");
 
 const customH2 = ({ ...props }): React.ReactElement => {
   return (
@@ -62,6 +67,22 @@ interface Props {
 }
 
 const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Props): Promise<React.ReactElement> => {
+  const addRowNumbers: number[] = [];
+  const deleteRowNumbers: number[] = [];
+  const diffHighlight = (
+    lineNumber: number,
+  ): {style: { display: string, backgroundColor?: string }} => {
+    const style: { display: string, backgroundColor?: string } = { display: 'block' };
+    console.log('addRowNumbers:', addRowNumbers);
+    console.log('deleteRowNumbers:', deleteRowNumbers);
+    if (addRowNumbers.includes(lineNumber)) {
+      style.backgroundColor = '#dbffdb';
+    } else if (deleteRowNumbers.includes(lineNumber)) {
+      style.backgroundColor = '#ffecec';
+    }
+    return { style };
+  };
+
   return (
     <>
       {isToc && (
@@ -81,19 +102,49 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
             // @ts-expect-error eslint-disable-this-line
             code({ inline, className, ...props }) {
               // eslint-disable-next-line
-              const hasLang = /language-(\w+)/.exec(className || '');
+              const lang = /language-(\w+)/.exec(className || '');
+              const isDiff = lang !== null && lang[1] === 'diff';
+
+              if (lang === null) return;
+              let code = '';
+              const codeRows = String(props.children).split(/\n/);
+              codeRows.forEach((codeRow, index) => {
+                if (/^\+.*$/.test(codeRow)) {
+                  addRowNumbers.push(index + 1);
+                } else if (/^-.*$/.test(codeRow)) {
+                  deleteRowNumbers.push(index + 1);
+                }
+              });
+              // const language = lang.input.replace('language-diff-', '');
+              console.log('================================');
+              console.log('codeRows:', codeRows);
+              console.log('lang[1]:', lang[1]);
+              console.log(lang);
+              // console.log('language:', language);
+              // console.log('code:', code);
+              console.log('================================');
+
+              code = codeRows.join("\n");
+              // if (isDiff) {
+              // } else {
+              //   code = String(props.children).replace(/\n$/, "");
+              // }
+              const html = markdownToHtml(code);
+
               // eslint-disable-next-line
-              return !inline && hasLang ? (
-                <SyntaxHighlighter
-                  style={oneDark}
-                  language={hasLang[1]}
-                  PreTag="div"
-                  className="mockup-code scrollbar-thin scrollbar-track-base-content/5 scrollbar-thumb-base-content/40 scrollbar-track-rounded-md scrollbar-thumb-rounded m-0"
-                  showLineNumbers
-                  useInlineStyles
-                >
-                  {String(props.children).replace(/\n$/, '')}
-                </SyntaxHighlighter>
+              return !inline && lang !== null ? (
+                // <SyntaxHighlighter
+                // style={oneDark}
+                // language={lang[1]}
+                // showLineNumbers
+                // useInlineStyles
+                // lineProps={diffHighlight}
+                //   // PreTag="div"
+                //   className={`mockup-code scrollbar-thin scrollbar-track-base-content/5 scrollbar-thumb-base-content/40 scrollbar-track-rounded-md scrollbar-thumb-rounded m-0 ${isDiff ? lang.input + ' diff-highlight' : ''}`}
+                // >
+                //   {code}
+                // </SyntaxHighlighter>
+                html
               ) : (
                 <code className={className} {...props} />
               );

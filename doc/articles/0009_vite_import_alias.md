@@ -80,12 +80,12 @@ plugins: [react(), tsconfigPaths()],
 [Path Autocomplete](https://marketplace.visualstudio.com/items?itemName=ionutvmi.path-autocomplete)の拡張機能を入れつつ、以下のように設定を追加することで補完も効かせられます。
 
 ```json:.vscode/settings.json
-{
-  "path-autocomplete.pathMappings": {
-    "@picture-app": "${folder}/src",
-  }
-...
-}
+ {
++  "path-autocomplete.pathMappings": {
++    "@picture-app": "${folder}/src",
++  }
+ ...
+ }
 ```
 
 ちなみにこちらは末尾の`/`を気にしなくてもOK。
