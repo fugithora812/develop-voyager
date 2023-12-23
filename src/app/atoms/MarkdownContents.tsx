@@ -12,9 +12,7 @@ import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
 import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { type NextPage } from 'next';
-import Prism from "prismjs";
 import remarkGfm from 'remark-gfm';
-import markdownToHtml from 'zenn-markdown-html';
 
 import abbreviateString from '@/app/lib/abbreviateString';
 
@@ -31,7 +29,6 @@ SyntaxHighlighter.registerLanguage('markdown', markdown);
 SyntaxHighlighter.registerLanguage('json', json);
 SyntaxHighlighter.registerLanguage('lua', lua);
 SyntaxHighlighter.registerLanguage('diff', diff);
-// require("prismjs/plugins/diff-highlight/prism-diff-highlight");
 
 const customH2 = ({ ...props }): React.ReactElement => {
   return (
@@ -67,22 +64,6 @@ interface Props {
 }
 
 const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Props): Promise<React.ReactElement> => {
-  const addRowNumbers: number[] = [];
-  const deleteRowNumbers: number[] = [];
-  const diffHighlight = (
-    lineNumber: number,
-  ): {style: { display: string, backgroundColor?: string }} => {
-    const style: { display: string, backgroundColor?: string } = { display: 'block' };
-    console.log('addRowNumbers:', addRowNumbers);
-    console.log('deleteRowNumbers:', deleteRowNumbers);
-    if (addRowNumbers.includes(lineNumber)) {
-      style.backgroundColor = '#dbffdb';
-    } else if (deleteRowNumbers.includes(lineNumber)) {
-      style.backgroundColor = '#ffecec';
-    }
-    return { style };
-  };
-
   return (
     <>
       {isToc && (
@@ -103,58 +84,72 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
             code({ inline, className, ...props }) {
               // eslint-disable-next-line
               const lang = /language-(\w+)/.exec(className || '');
-              const isDiff = lang !== null && lang[1] === 'diff';
 
               if (lang === null) return;
+              const addRowNumbers: number[] = [];
+              const deleteRowNumbers: number[] = [];
               let code = '';
               const codeRows = String(props.children).split(/\n/);
-              codeRows.forEach((codeRow, index) => {
+              const excludedPrefixCodeRows = codeRows.map((codeRow, index) => {
                 if (/^\+.*$/.test(codeRow)) {
                   addRowNumbers.push(index + 1);
+                  return codeRow.slice(2);
                 } else if (/^-.*$/.test(codeRow)) {
                   deleteRowNumbers.push(index + 1);
+                  return codeRow.slice(2);
                 }
+                return codeRow;
               });
-              // const language = lang.input.replace('language-diff-', '');
-              console.log('================================');
-              console.log('codeRows:', codeRows);
-              console.log('lang[1]:', lang[1]);
-              console.log(lang);
-              // console.log('language:', language);
-              // console.log('code:', code);
-              console.log('================================');
+              code = excludedPrefixCodeRows.join('\n');
 
-              code = codeRows.join("\n");
-              // if (isDiff) {
-              // } else {
-              //   code = String(props.children).replace(/\n$/, "");
-              // }
-              const html = markdownToHtml(code);
-
+              const [, filename] = lang.input.split(':');
+              let customStyle = {};
+              if (typeof filename !== 'undefined') {
+                customStyle = {
+                  marginTop: '0px',
+                  borderTopLeftRadius: '0px',
+                };
+              } else {
+                customStyle = {
+                  marginTop: '0px',
+                };
+              }
               // eslint-disable-next-line
               return !inline && lang !== null ? (
-                // <SyntaxHighlighter
-                // style={oneDark}
-                // language={lang[1]}
-                // showLineNumbers
-                // useInlineStyles
-                // lineProps={diffHighlight}
-                //   // PreTag="div"
-                //   className={`mockup-code scrollbar-thin scrollbar-track-base-content/5 scrollbar-thumb-base-content/40 scrollbar-track-rounded-md scrollbar-thumb-rounded m-0 ${isDiff ? lang.input + ' diff-highlight' : ''}`}
-                // >
-                //   {code}
-                // </SyntaxHighlighter>
-                html
+                <>
+                  {typeof filename !== 'undefined' && (
+                    <div>
+                      <span className="bg-slate-300 text-gray-800 dark:bg-gray-800 dark:text-slate-300 px-2 py-[2.3px] rounded-t-lg mb-0">{filename}</span>
+                    </div>
+                  )}
+                  <SyntaxHighlighter
+                    style={oneDark}
+                    language={lang[1]}
+                    showLineNumbers
+                    useInlineStyles
+                    wrapLines
+                    customStyle={customStyle}
+                    lineNumberStyle={{ display: 'none', padding: '-10px' }}
+                    lineProps={(lineNumber: number) => {
+                      const style: { display: string; backgroundColor?: string } = { display: 'block' };
+                      if (addRowNumbers.includes(lineNumber)) {
+                        style.backgroundColor = '#00921b33';
+                      } else if (deleteRowNumbers.includes(lineNumber)) {
+                        style.backgroundColor = '#da363233';
+                      }
+                      return { style };
+                    }}
+                  >
+                    {code}
+                  </SyntaxHighlighter>
+                </>
               ) : (
                 <code className={className} {...props} />
               );
             },
             h2({ ...props }) {
               return (
-                <h2
-                  id={String(props.children).replace(/\n$/, '')}
-                  className="z-50 bg-gray-100 dark:bg-slate-900 hover:bg-slate-700 group"
-                >
+                <h2 id={String(props.children).replace(/\n$/, '')} className="z-50 bg-gray-100 dark:bg-slate-900 group">
                   <a
                     href={`#${String(props.children).replace(/\n$/, '')}`}
                     className="inline-flex items-center py-1 text-base text-gray-900 duration-300 hover:text-stone-500 dark:text-stone-100 dark:hover:text-stone-300 opacity-0 group-hover:opacity-100 ml-[-25px]"
