@@ -19,11 +19,11 @@ vite.config.tsに`resolve.alias`を記述し、それとtsconfig.jsonでのパ�
 
 ```ts:vite.config.ts
 export default defineConfig({
-resolve: {
-  alias: [
-    { find: '@picture-app/', replacement: `${__dirname}/src/` },
-  ],
-},
++ resolve: {
++   alias: [
++     { find: '@picture-app/', replacement: `${__dirname}/src/` },
++   ],
++ },
   plugins: [react()],
 });
 ```
@@ -31,10 +31,10 @@ resolve: {
 ```json:tsconfig.json
 {
   "compilerOptions": {
-  "baseUrl": "./",
-  "paths": {
-    "@picture-app/*": ["src/*"],
-  },
++   "baseUrl": "./",
++   "paths": {
++     "@picture-app/*": ["src/*"],
++   },
     ...
 ```
 
@@ -56,35 +56,36 @@ npm i -D vite-tsconfig-paths
 ```ts:vite.config.ts
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
++ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-plugins: [react(), tsconfigPaths()],
+- plugins: [react()],
++ plugins: [react(), tsconfigPaths()],
 });
 ```
 
 ```json:tsconfig.json
 {
   "compilerOptions": {
-   "baseUrl": "./",
-   "paths": {
-     "@picture-app/*": ["src/*"],
-   },
++   "baseUrl": "./",
++   "paths": {
++     "@picture-app/*": ["src/*"],
++   },
     ...
 ```
 
 こちらの手法だと、パスエイリアスに関する設定記述はtsconfig.jsonの側に一元化することができるので、時間が経つごとにありがたみが増しそう。ということで今回はこちらの手法を選択しました。
 
-# おまけ: VSCode でパスエイリアスの補完が効くように
+## おまけ: VSCode でパスエイリアスの補完が効くように
 
 [Path Autocomplete](https://marketplace.visualstudio.com/items?itemName=ionutvmi.path-autocomplete)の拡張機能を入れつつ、以下のように設定を追加することで補完も効かせられます。
 
 ```json:.vscode/settings.json
  {
-+  "path-autocomplete.pathMappings": {
-+    "@picture-app": "${folder}/src",
-+  }
- ...
++   "path-autocomplete.pathMappings": {
++     "@picture-app": "${folder}/src",
++   }
+   ...
  }
 ```
 
