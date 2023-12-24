@@ -119,7 +119,9 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
                 <>
                   {typeof filename !== 'undefined' && (
                     <div>
-                      <span className="bg-slate-300 text-gray-800 dark:bg-gray-800 dark:text-slate-300 px-2 py-[2.5px] rounded-t-lg mb-0">{filename}</span>
+                      <span className="bg-slate-300 text-gray-800 dark:bg-gray-800 dark:text-slate-300 px-2 py-[2.5px] rounded-t-lg mb-0">
+                        {filename}
+                      </span>
                     </div>
                   )}
                   <SyntaxHighlighter
@@ -158,6 +160,37 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
                   </a>
                   {props.children}
                 </h2>
+              );
+            },
+            blockquote({ ...props }) {
+              const { children } = props;
+              if (children === null) return;
+              if (typeof children === 'undefined') return;
+              const citeStyle = 'block text-[#737373] text-[1em] text-right mt-2 font-semibold';
+
+              // @ts-expect-error eslint-disable-this-line
+              if (typeof children[1].props.children === 'string') {
+                // @ts-expect-error eslint-disable-this-line
+                const [quote, cite] = children[1].props.children.split(/\nfrom: /);
+                return (
+                  <blockquote>
+                    <p>{quote}</p>
+                    <cite className={citeStyle}>出典：{cite}</cite>
+                  </blockquote>
+                );
+              }
+              // @ts-expect-error eslint-disable-this-line
+              const [quote] = children[1].props.children[0].split(/\nfrom: /);
+              // @ts-expect-error eslint-disable-this-line
+              const { href, children: cite } = children[1].props.children[1].props;
+              return (
+                <blockquote className="quote-003">
+                  <p>{quote}</p>
+                  <cite className={citeStyle}>
+                    出典：
+                    <a href={href}>{cite}</a>
+                  </cite>
+                </blockquote>
               );
             },
           }}
