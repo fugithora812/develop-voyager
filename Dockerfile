@@ -8,6 +8,7 @@ COPY ./next.config.js ./
 COPY ./public ./public
 COPY ./.next/static ./.next/static
 COPY ./.next/standalone ./
+COPY ./.env.local ./.env.local
 
 # ベースイメージ変更に伴う調整
 ENTRYPOINT ["node"]
