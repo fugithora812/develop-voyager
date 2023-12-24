@@ -55,3 +55,36 @@ make build
 # deploy to ECR and update Lambda with Terraform
 make deploy
 ```
+
+## サポートするMarkdown独自記法
+
+### コードブロック
+
+以下のように書くことでファイル名、差分ハイライトをサポートします。
+
+```
+```ts:vite.config.ts
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
++ import tsconfigPaths from 'vite-tsconfig-paths';
+
+export default defineConfig({
+- plugins: [react()],
++ plugins: [react(), tsconfigPaths()],
+});
+```
+```
+
+![code_image](https://private-user-images.githubusercontent.com/63992141/292649423-5f063ea0-6683-47c6-9508-69080954ad7c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDMzODMxOTYsIm5iZiI6MTcwMzM4Mjg5NiwicGF0aCI6Ii82Mzk5MjE0MS8yOTI2NDk0MjMtNWYwNjNlYTAtNjY4My00N2M2LTk1MDgtNjkwODA5NTRhZDdjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMjQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjI0VDAxNTQ1NlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQzNTQ0Mzc5OTE3YzkyZGYzOThmMDUyMTc0NWNkZGM4NDhlNjQzMmMxOGQzODQ0OWY1ZWUzNTM4MTk5YWMyYzMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.bIjxqac89HLEUiKHT3BmSQhMQTC37qVZ4CQCKrh4Mdg)
+
+### 引用ブロック
+
+引用の最後を改行し「from: 」プレフィックスをつけて出典元を記載することで引用の出典表示をサポートします。
+
+```
+> オブジェクト指向は「現実世界の物事に即したデータモデル」である一方で、関係データベースは「検索やCRUDなどの処理に最適化されたデータモデル」となっている。
+from: [オブジェクト関係マッピング](https://qiita.com/yk-nakamura/items/acd071f16cda844579b9)
+```
+
+![quote_image](https://private-user-images.githubusercontent.com/63992141/292651619-6afa6981-dc9c-425c-b80a-76cf3b1eca5e.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDMzODM2NDEsIm5iZiI6MTcwMzM4MzM0MSwicGF0aCI6Ii82Mzk5MjE0MS8yOTI2NTE2MTktNmFmYTY5ODEtZGM5Yy00MjVjLWI4MGEtNzZjZjNiMWVjYTVlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMjQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjI0VDAyMDIyMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWExYjhhY2Q2Nzg3YmFmNjkxNDI5N2Q5M2U2NzEwZjgyYWVhMDZmNzI3OWMwMTRiZTY1YzRjNzcxMGI0N2ZhMzgmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.ljpFI0Fvt3oK6YAgTqWNCWiwAKWr9FYyPh8llboeVds)
+
