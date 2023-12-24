@@ -1,6 +1,6 @@
 'use server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { fromTemporaryCredentials } from "@aws-sdk/credential-providers";
+import { fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 
 export interface ArticleMetadata {
@@ -13,18 +13,19 @@ export interface ArticleMetadata {
   createdAt: string;
 }
 
-const isCi = process.env.NODE_ENV === 'production'
-  && typeof process.env.AWS_ROLE_ARN !== 'undefined';
+const isCi = process.env.NODE_ENV === 'production' && typeof process.env.AWS_ROLE_ARN !== 'undefined';
 const client = new DynamoDBClient({
   region: 'us-east-1',
-  credentials: isCi ? undefined : fromTemporaryCredentials({
-    params: {
-      RoleArn: process.env.AWS_ROLE_ARN ?? '',
-      RoleSessionName: 'nextjs-dynamodb-client',
-      DurationSeconds: 3600,
-    },
-    clientConfig: { region: 'us-east-1' },
-  }),
+  credentials: isCi
+    ? undefined
+    : fromTemporaryCredentials({
+        params: {
+          RoleArn: process.env.AWS_ROLE_ARN ?? '',
+          RoleSessionName: 'nextjs-dynamodb-client',
+          DurationSeconds: 3600,
+        },
+        clientConfig: { region: 'us-east-1' },
+      }),
 });
 
 export const getAllArticles = async (): Promise<ArticleMetadata[]> => {
