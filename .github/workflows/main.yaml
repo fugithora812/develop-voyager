@@ -13,6 +13,10 @@ jobs:
     name: check with prettier & eslint, AWS deployment
     runs-on: ubuntu-latest
     steps:
+      - name: Set up arm64 QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+            platforms: linux/arm64
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install AWS CLI
