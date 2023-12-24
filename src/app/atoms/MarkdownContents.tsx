@@ -3,6 +3,7 @@ import { HiLink } from 'react-icons/hi';
 import ReactMarkdown from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
+import diff from 'react-syntax-highlighter/dist/cjs/languages/prism/diff';
 import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
 import lua from 'react-syntax-highlighter/dist/cjs/languages/prism/lua';
 import markdown from 'react-syntax-highlighter/dist/cjs/languages/prism/markdown';
@@ -27,6 +28,7 @@ SyntaxHighlighter.registerLanguage('bash', bash);
 SyntaxHighlighter.registerLanguage('markdown', markdown);
 SyntaxHighlighter.registerLanguage('json', json);
 SyntaxHighlighter.registerLanguage('lua', lua);
+SyntaxHighlighter.registerLanguage('diff', diff);
 
 const customH2 = ({ ...props }): React.ReactElement => {
   return (
@@ -81,29 +83,73 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
             // @ts-expect-error eslint-disable-this-line
             code({ inline, className, ...props }) {
               // eslint-disable-next-line
-              const hasLang = /language-(\w+)/.exec(className || '');
+              const lang = /language-(\w+)/.exec(className || '');
+
+              if (lang === null) return;
+              const addRowNumbers: number[] = [];
+              const deleteRowNumbers: number[] = [];
+              let code = '';
+              const codeRows = String(props.children).split(/\n/);
+              const excludedPrefixCodeRows = codeRows.map((codeRow, index) => {
+                if (/^\+.*$/.test(codeRow)) {
+                  addRowNumbers.push(index + 1);
+                  return codeRow.slice(2);
+                } else if (/^-.*$/.test(codeRow)) {
+                  deleteRowNumbers.push(index + 1);
+                  return codeRow.slice(2);
+                }
+                return codeRow;
+              });
+              code = excludedPrefixCodeRows.join('\n');
+
+              const [, filename] = lang.input.split(':');
+              let customStyle = {};
+              if (typeof filename !== 'undefined') {
+                customStyle = {
+                  marginTop: '0px',
+                  borderTopLeftRadius: '0px',
+                };
+              } else {
+                customStyle = {
+                  marginTop: '0px',
+                };
+              }
               // eslint-disable-next-line
-              return !inline && hasLang ? (
-                <SyntaxHighlighter
-                  style={oneDark}
-                  language={hasLang[1]}
-                  PreTag="div"
-                  className="mockup-code scrollbar-thin scrollbar-track-base-content/5 scrollbar-thumb-base-content/40 scrollbar-track-rounded-md scrollbar-thumb-rounded m-0"
-                  showLineNumbers
-                  useInlineStyles
-                >
-                  {String(props.children).replace(/\n$/, '')}
-                </SyntaxHighlighter>
+              return !inline && lang !== null ? (
+                <>
+                  {typeof filename !== 'undefined' && (
+                    <div>
+                      <span className="bg-slate-300 text-gray-800 dark:bg-gray-800 dark:text-slate-300 px-2 py-[2.5px] rounded-t-lg mb-0">{filename}</span>
+                    </div>
+                  )}
+                  <SyntaxHighlighter
+                    style={oneDark}
+                    language={lang[1]}
+                    showLineNumbers
+                    useInlineStyles
+                    wrapLines
+                    customStyle={customStyle}
+                    lineNumberStyle={{ display: 'none', padding: '-10px' }}
+                    lineProps={(lineNumber: number) => {
+                      const style: { display: string; backgroundColor?: string } = { display: 'block' };
+                      if (addRowNumbers.includes(lineNumber)) {
+                        style.backgroundColor = '#00921b33';
+                      } else if (deleteRowNumbers.includes(lineNumber)) {
+                        style.backgroundColor = '#da363233';
+                      }
+                      return { style };
+                    }}
+                  >
+                    {code}
+                  </SyntaxHighlighter>
+                </>
               ) : (
                 <code className={className} {...props} />
               );
             },
             h2({ ...props }) {
               return (
-                <h2
-                  id={String(props.children).replace(/\n$/, '')}
-                  className="z-50 bg-gray-100 dark:bg-slate-900 hover:bg-slate-700 group"
-                >
+                <h2 id={String(props.children).replace(/\n$/, '')} className="z-50 bg-gray-100 dark:bg-slate-900 group">
                   <a
                     href={`#${String(props.children).replace(/\n$/, '')}`}
                     className="inline-flex items-center py-1 text-base text-gray-900 duration-300 hover:text-stone-500 dark:text-stone-100 dark:hover:text-stone-300 opacity-0 group-hover:opacity-100 ml-[-25px]"
