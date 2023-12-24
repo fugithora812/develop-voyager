@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 jobs:
   check-and-deploy:
-    name: AWS deployment
+    name: check with prettier & eslint, AWS deployment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,4 +40,4 @@ jobs:
           AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
         run: |
           echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}" >> .env.local
-          make deploy
+          make build
