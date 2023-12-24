@@ -11,9 +11,7 @@ permissions:
 jobs:
   check-and-deploy:
     name: check with prettier & eslint, AWS deployment
-    runs-on: ubuntu-latest
-    container:
-      image: 1ba4b4d5877b # node:20.10 arm64
+    runs-on: arm64-deploy # self hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v2
