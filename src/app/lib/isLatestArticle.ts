@@ -1,11 +1,10 @@
-import { type ArticleMetadata, fetchArticleMetadataSync } from './fetchArticleMetadata';
+import { type ArticleMetadata } from './dynamoDbClient';
 
-const isLatestArticle = (article: ArticleMetadata): boolean => {
-  const metadata = fetchArticleMetadataSync();
-  const articleDates = metadata.articles.map((a: ArticleMetadata) => new Date(a.date));
+const isLatestArticle = (article: ArticleMetadata, articleList: ArticleMetadata[]): boolean => {
+  const articleDates = articleList.map((a: ArticleMetadata) => new Date(a.createdAt));
   const mostRecentDate = articleDates.reduce((a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b));
 
-  return new Date(article.date).getTime() === mostRecentDate.getTime();
+  return new Date(article.createdAt).getTime() === mostRecentDate.getTime();
 };
 
 export default isLatestArticle;

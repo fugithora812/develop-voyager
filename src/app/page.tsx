@@ -3,11 +3,14 @@ import React from 'react';
 import ArticleCard from './atoms/articleCard';
 import Footer from './atoms/footer';
 import Header from './atoms/header';
-import fetchArticleMetadata, { type ArticleMetadata } from './lib/fetchArticleMetadata';
+import { type ArticleMetadata, getAllArticles } from './lib/dynamoDbClient';
 import isLatestArticle from './lib/isLatestArticle';
 
 const Home = async (): Promise<React.ReactElement> => {
-  const metadata = await fetchArticleMetadata();
+  const articles = await getAllArticles();
+  articles.sort((a: ArticleMetadata, b: ArticleMetadata) => {
+    return a.createdAt < b.createdAt ? 1 : -1;
+  });
 
   return (
     <>
@@ -44,7 +47,7 @@ const Home = async (): Promise<React.ReactElement> => {
                 <span className="text-sm text-gray-600 dark:text-gray-400">Displayed All Articles Now.</span>
               </div>
               <div className="flex flex-wrap items-center min-[1170px]:justify-between gap-1 mx-40">
-                {metadata.articles.map((article: ArticleMetadata) => (
+                {articles.map((article: ArticleMetadata) => (
                   <ArticleCard
                     key={article.href}
                     imageUrl={article.imageUrl}
@@ -52,7 +55,7 @@ const Home = async (): Promise<React.ReactElement> => {
                     title={article.title}
                     description={article.description}
                     href={article.href}
-                    latest={isLatestArticle(article)}
+                    latest={isLatestArticle(article, articles)}
                   />
                 ))}
               </div>
