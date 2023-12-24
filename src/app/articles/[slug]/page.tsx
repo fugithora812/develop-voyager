@@ -15,7 +15,13 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props): Promise<React.Re
   return (
     <div className="text-gray-900 bg-gray-100 dark:bg-slate-900 dark:text-slate-30">
       <Header />
-      <Suspense fallback={<span className="loading loading-dots loading-lg absolute inset-x-[50%] inset-y-[60%]" />}>
+      <Suspense
+        fallback={
+          <div className="bg-gray-100 dark:bg-slate-900 h-screen">
+            <span className="loading loading-dots loading-lg absolute inset-x-[50%] inset-y-[60%] dark:text-slate-30" />
+          </div>
+        }
+      >
         <ArticleContent slug={slug} />
       </Suspense>
       <Footer />

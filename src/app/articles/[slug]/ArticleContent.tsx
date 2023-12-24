@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import path from 'path';
 
 import MarkdownContents from '@/app/atoms/MarkdownContents';
-import fetchArticleMetadata, { type ArticleMetadata } from '@/app/lib/fetchArticleMetadata';
+import { getArticleByPrimaryKey } from '@/app/lib/dynamoDbClient';
 import { getMarkdownData } from '@/app/lib/markdown';
 
 interface Props {
@@ -12,7 +12,10 @@ interface Props {
 }
 
 const ArticleContent: NextPage<Props> = async ({ slug }: Props): Promise<React.ReactElement> => {
-  const pathToContent = path.join(process.cwd(), 'doc', 'articles', `${slug}.md`);
+  const articleId = slug.slice(0, 4);
+  const article = await getArticleByPrimaryKey(articleId, `/articles/${slug}`);
+  const imageUrl = article?.imageUrl;
+  const pathToContent = path.join(process.cwd(), 'doc', `${article?.href}.md`);
   let content;
   try {
     content = await getMarkdownData(pathToContent);
@@ -20,10 +23,6 @@ const ArticleContent: NextPage<Props> = async ({ slug }: Props): Promise<React.R
     console.error(error);
     redirect('/404');
   }
-
-  const metadata = await fetchArticleMetadata();
-  const article = metadata.articles.find((article: ArticleMetadata) => article.href === `/articles/${slug}`);
-  const imageUrl = article?.imageUrl;
 
   return (
     <>
