@@ -119,7 +119,7 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
                 <>
                   {typeof filename !== 'undefined' && (
                     <div>
-                      <span className="bg-slate-300 text-gray-800 dark:bg-gray-800 dark:text-slate-300 px-2 py-[2.3px] rounded-t-lg mb-0">{filename}</span>
+                      <span className="bg-slate-300 text-gray-800 dark:bg-gray-800 dark:text-slate-300 px-2 py-[2.5px] rounded-t-lg mb-0">{filename}</span>
                     </div>
                   )}
                   <SyntaxHighlighter
