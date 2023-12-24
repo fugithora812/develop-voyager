@@ -9,7 +9,8 @@ login:
 	make login-ecr-public
 
 build:
-	docker build -t nextjs_tutorial .
+	npm run build \
+	&& docker build -t nextjs_tutorial .
 
 run:
 	docker run --name nextjs_tutorial --rm -d -p 3000:3000 nextjs_tutorial
