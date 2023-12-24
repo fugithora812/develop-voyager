@@ -12,6 +12,8 @@ jobs:
   check-and-deploy:
     name: check with prettier & eslint, AWS deployment
     runs-on: ubuntu-latest
+    container:
+      image: 1ba4b4d5877b # node:20.10 arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,10 +27,6 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
-      - name: Set up arm64 QEMU
-        uses: docker/setup-qemu-action@v2
-        with:
-            platforms: linux/arm64
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
