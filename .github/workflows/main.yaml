@@ -49,6 +49,10 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: touch .env.local
+        env:
+          AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+        run: echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}" >> .env.local
       - name: Get the latest commit short hash
         id: get_latest_hash
         run: echo "latest_tag=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
@@ -72,7 +76,6 @@ jobs:
           AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
           ECR_REPO_URI: ${{ secrets.ECR_REPO_URI }}
         run: |
-          echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}" >> .env.local
           make deploy-ci \
             IMAGE_ID=${{ steps.docker_build.outputs.imageid }} \
             LATEST_TAG=${{ steps.get_latest_hash.outputs.latest_tag }} \
