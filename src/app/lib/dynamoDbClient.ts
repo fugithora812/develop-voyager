@@ -13,10 +13,10 @@ export interface ArticleMetadata {
   createdAt: string;
 }
 
-const isCi = process.env.NODE_ENV === 'production' && typeof process.env.AWS_ROLE_ARN !== 'undefined';
+const hasCred = process.env.NODE_ENV === 'production' && process.env.AWS_ROLE_ARN !== '';
 const client = new DynamoDBClient({
   region: 'us-east-1',
-  credentials: isCi
+  credentials: hasCred
     ? undefined
     : fromTemporaryCredentials({
         params: {
@@ -35,7 +35,7 @@ export const getAllArticles = async (): Promise<ArticleMetadata[]> => {
   });
   // eslint-disable-next-line
   const response = await client.send(command);
-  console.info('getAllArticles success:', response);
+  console.info('getAllArticles success:', JSON.stringify(response));
 
   if (typeof response.Items === 'undefined') {
     return [];
@@ -55,7 +55,7 @@ export const getAllArticles = async (): Promise<ArticleMetadata[]> => {
 };
 
 export const getArticleByPrimaryKey = async (articleId: string, href: string): Promise<ArticleMetadata | null> => {
-  console.info('getArticleByPrimaryKey started. articleId:', articleId, 'href:', href);
+  console.info('getArticleByPrimaryKey started. articleId:', articleId, ', href:', href);
   const command = new GetCommand({
     TableName: 'ArticlesMetadata',
     Key: {
@@ -66,7 +66,7 @@ export const getArticleByPrimaryKey = async (articleId: string, href: string): P
   });
   // eslint-disable-next-line
   const response = await client.send(command);
-  console.info('getArticleByPrimaryKey success:', response);
+  console.info('getArticleByPrimaryKey success:', JSON.stringify(response));
 
   if (typeof response.Item === 'undefined') {
     return null;
