@@ -27,5 +27,8 @@ exec:
 deploy:
 	zsh scripts/deploy_aws.sh
 
+IMAGE_ID="nextjs_tutorial:latest"
+LATEST_TAG="latest"
+ECR_REPO_URI="ecr_dummy.example.com"
 deploy-ci:
-	bash scripts/deploy_aws_ci.sh
+	bash scripts/deploy_aws_ci.sh ${IMAGE_ID} ${LATEST_TAG} ${ECR_REPO_URI}
