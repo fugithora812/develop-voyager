@@ -1,0 +1,55 @@
+name: Check format & lint AWS deployment
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+env:
+  PRJ_ENV_ID: tengencho-dev
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+jobs:
+  deploy:
+    name: AWS deployment
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+      - name: Install AWS CLI
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          version: 2
+          verbose: false
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+      - name: Cache CDK Dependency
+        uses: actions/cache@v3
+        id: cache_cdk_dependency_id
+        env:
+          cache-name: cache-cdk-dependency
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: Setup Node.js
+        if: ${{ steps.cache_cdk_dependency_id.outputs.cache-hit != 'true' }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20.x
+      - name: Install dependencies
+        if: ${{ steps.cache_cdk_dependency_id.outputs.cache-hit != 'true' }}
+        run: npm ci
+      - name: Deploy
+        env:
+          AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+        run: |
+          echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}" >> .env.local
+          make build
+          make deploy-ci
+          rm .env.local

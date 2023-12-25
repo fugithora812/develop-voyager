@@ -1,6 +1,6 @@
 'use server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-// import { fromTemporaryCredentials } from "@aws-sdk/credential-providers";
+import { fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 
 export interface ArticleMetadata {
@@ -13,17 +13,19 @@ export interface ArticleMetadata {
   createdAt: string;
 }
 
-// const isDev = process.env.NODE_ENV === 'development';
+const hasCred = process.env.NODE_ENV === 'production' && process.env.AWS_ROLE_ARN !== '';
 const client = new DynamoDBClient({
   region: 'us-east-1',
-  // credentials: isDev ? undefined : fromTemporaryCredentials({
-  //   params: {
-  //     RoleArn: '',
-  //     RoleSessionName: 'nextjs-dynamodb-client',
-  //     DurationSeconds: 3600,
-  //   },
-  //   clientConfig: { region: 'us-east-1' },
-  // }),
+  credentials: hasCred
+    ? undefined
+    : fromTemporaryCredentials({
+        params: {
+          RoleArn: process.env.AWS_ROLE_ARN ?? '',
+          RoleSessionName: 'nextjs-dynamodb-client',
+          DurationSeconds: 3600,
+        },
+        clientConfig: { region: 'us-east-1' },
+      }),
 });
 
 export const getAllArticles = async (): Promise<ArticleMetadata[]> => {
@@ -33,7 +35,7 @@ export const getAllArticles = async (): Promise<ArticleMetadata[]> => {
   });
   // eslint-disable-next-line
   const response = await client.send(command);
-  console.info('getAllArticles success:', response);
+  console.info('getAllArticles success:', JSON.stringify(response));
 
   if (typeof response.Items === 'undefined') {
     return [];
@@ -53,7 +55,7 @@ export const getAllArticles = async (): Promise<ArticleMetadata[]> => {
 };
 
 export const getArticleByPrimaryKey = async (articleId: string, href: string): Promise<ArticleMetadata | null> => {
-  console.info('getArticleByPrimaryKey started. articleId:', articleId, 'href:', href);
+  console.info('getArticleByPrimaryKey started. articleId:', articleId, ', href:', href);
   const command = new GetCommand({
     TableName: 'ArticlesMetadata',
     Key: {
@@ -64,7 +66,7 @@ export const getArticleByPrimaryKey = async (articleId: string, href: string): P
   });
   // eslint-disable-next-line
   const response = await client.send(command);
-  console.info('getArticleByPrimaryKey success:', response);
+  console.info('getArticleByPrimaryKey success:', JSON.stringify(response));
 
   if (typeof response.Item === 'undefined') {
     return null;

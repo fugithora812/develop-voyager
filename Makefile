@@ -1,6 +1,9 @@
 login-ecr:
 	aws ecr get-login-password --region us-east-1 --profile personal-sso-access | docker login --username AWS --password-stdin 609984871633.dkr.ecr.us-east-1.amazonaws.com
 
+login-ecr-ci:
+	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 609984871633.dkr.ecr.us-east-1.amazonaws.com
+
 login-ecr-public:
 	aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/e9k7x3b6
 
@@ -23,3 +26,6 @@ exec:
 
 deploy:
 	zsh scripts/deploy_aws.sh
+
+deploy-ci:
+	bash scripts/deploy_aws_ci.sh
