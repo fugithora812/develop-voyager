@@ -48,8 +48,10 @@ jobs:
       - name: Deploy
         env:
           AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+          NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
         run: |
           echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}" >> .env.local
+          echo "NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}" >> .env.local
           make build
           make deploy-ci
           rm .env.local
