@@ -1,4 +1,4 @@
-name: Check format & lint AWS deployment
+name: AWS deployment
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
@@ -66,6 +66,7 @@ jobs:
         with:
           push: false
           platforms: linux/arm64
+          file: ./Dockerfile.CI
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
           tags: ${{ env.ECR_REPO_URI }}:${{ steps.get_latest_hash.outputs.latest_tag }}
