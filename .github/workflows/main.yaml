@@ -67,8 +67,8 @@ jobs:
           push: false
           platforms: linux/arm64
           file: ./Dockerfile.CI
-          # cache-from: type=gha
-          # cache-to: type=gha,mode=max
+          cache-from: type=local
+          cache-to: type=local
           tags: ${{ env.ECR_REPO_URI }}:${{ steps.get_latest_hash.outputs.latest_tag }}
       - name: Login to Amazon ECR
         id: login-ecr
