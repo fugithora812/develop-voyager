@@ -1,4 +1,4 @@
-name: Check format & lint AWS deployment
+name: AWS deployment
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
@@ -45,11 +45,43 @@ jobs:
       - name: Install dependencies
         if: ${{ steps.cache_cdk_dependency_id.outputs.cache-hit != 'true' }}
         run: npm ci
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: touch .env.local
+        env:
+          AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+        run: echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}" >> .env.local
+      - name: Get the latest commit short hash
+        id: get_latest_hash
+        run: echo "latest_tag=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Build arm64 image
+        id: docker_build
+        env:
+          ECR_REPO_URI: ${{ secrets.ECR_REPO_URI }}
+          AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          platforms: linux/arm64
+          file: ./Dockerfile.CI
+          build-args: |
+            --build-arg ECR_REPO_URI=${ECR_REPO_URI}
+            --build-arg AWS_ROLE_ARN=${AWS_ROLE_ARN}
+          tags: ${{ env.ECR_REPO_URI }}:${{ steps.get_latest_hash.outputs.latest_tag }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
       - name: Deploy
         env:
           AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+          ECR_REPO_URI: ${{ secrets.ECR_REPO_URI }}
         run: |
-          echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}" >> .env.local
-          make build
-          make deploy-ci
+          make deploy-ci \
+            IMAGE_ID=${{ steps.docker_build.outputs.imageid }} \
+            LATEST_TAG=${{ steps.get_latest_hash.outputs.latest_tag }} \
+            ECR_REPO_URI=${{ env.ECR_REPO_URI }}
           rm .env.local

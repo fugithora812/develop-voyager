@@ -1,14 +1,34 @@
 #!/bin/sh
 
+image_id=$1
+latest_tag=$2
+ecr_repo_uri=$3
+
+echo "image_id: $image_id"
+echo "latest_tag: $latest_tag"
+echo "ecr_repo_uri: $ecr_repo_uri"
+
+if [ -z "$image_id" ]; then
+    echo "image_id is empty."
+    exit 1
+fi
+if [ -z "$latest_tag" ]; then
+    echo "latest_tag is empty."
+    exit 1
+fi
+if [ -z "$ecr_repo_uri" ]; then
+    echo "ecr_repo_uri is empty."
+    exit 1
+fi
+
 export TZ=Asia/Tokyo
-# 最新のgitコミットハッシュをlatest_tagに
-latest_tag=$(git rev-parse --short HEAD)
-
 make login-ecr-ci
-docker tag nextjs_tutorial:latest 609984871633.dkr.ecr.us-east-1.amazonaws.com/nextjs_tutorial_ecr:$latest_tag
-docker push 609984871633.dkr.ecr.us-east-1.amazonaws.com/nextjs_tutorial_ecr:$latest_tag
+docker tag $image_id $ecr_repo_uri:$latest_tag
+docker push $ecr_repo_uri:$latest_tag
 
-aws lambda update-function-code --function-name NextJsTutorial --image-uri 609984871633.dkr.ecr.us-east-1.amazonaws.com/nextjs_tutorial_ecr:$latest_tag
+aws lambda update-function-code \
+  --function-name NextJsTutorial \
+  --image-uri $ecr_repo_uri:$latest_tag
 
 REPOSITORY_NAME="nextjs_tutorial_ecr"
 IMAGE_TAG=$(git rev-parse --short HEAD~2)
