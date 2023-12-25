@@ -13,8 +13,11 @@ jobs:
     name: AWS deployment
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
         with:
