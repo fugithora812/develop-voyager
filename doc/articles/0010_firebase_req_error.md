@@ -37,32 +37,32 @@ const LoginForm = (): React.ReactElement => {
   };
 
   return (
-      <>
-        <form>
-          <input
-            type="text"
-            id="sign-in-email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            placeholder="Your email"
-          />
-          <input
-            type="password"
-            id="sign-in-email"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            placeholder="Your password"
-          />
-          <button
-            onClick={handleLogin}
-            type="submit"
-          >
-            Login
-          </button>
-        </form>
-      </>
+    <>
+      <form>
+        <input
+          type="text"
+          id="sign-in-email"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          placeholder="Your email"
+        />
+        <input
+          type="password"
+          id="sign-in-email"
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+          placeholder="Your password"
+        />
+        <button
+          onClick={handleLogin}
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+    </>
   );
 };
 
@@ -71,8 +71,6 @@ export default LoginForm;
 
 ログインできるはずのemail & passwordを入力してLoginボタンを押すと、firebaseと通信するためのAPI_KEYの設定が正しいはずなのに"network-request-failed"に。
 
-![error](https://github.com/fugithora812/nextjs-tutorial/blob/809cbda60ed40789a9e24a18be678f97b0eb83c0/doc/articles/images/0010_01.png?raw=true)
-
 ## 真実はシンプルだった
 
 色々調べた結果、↑は「"素のformタグ"を使っていたから」ということがわかりました。
@@ -80,8 +78,6 @@ export default LoginForm;
 というのもこの実装では、formタグで囲ったLoginボタンを押すとページの更新が走ってしまうために、せっかくbuttonの`onClick`で処理しようとしていたfirebaseでの認証処理が中断されてエラーが発生していたのです。
 
 ということで、私は囲っているformタグを削除してエラー解消に成功しました。
-
-![login_ok](https://github.com/fugithora812/nextjs-tutorial/blob/809cbda60ed40789a9e24a18be678f97b0eb83c0/doc/articles/images/0010_02.png?raw=true)
 
 ちなみにこのエラーは「認証の処理中にページの更新が走った」ことが本質的な原因ですが、handleLoginをformタグの`onSubmit`で呼び出すことでは回避できませんでした。多分非同期処理を書いた関数をawaitつけずに呼んでるからだとおもう。
 
