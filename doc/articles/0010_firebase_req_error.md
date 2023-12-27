@@ -1,4 +1,4 @@
-# 【JS × Firebase】`Auth/network-request-failed`が地味ハマリポイントだった
+# 【JS × Firebase】"Auth/network-request-failed"が地味ハマリポイントだった
 
 ## これは何？
 
@@ -71,7 +71,7 @@ export default LoginForm;
 
 ログインできるはずのemail & passwordを入力してLoginボタンを押すと、firebaseと通信するためのAPI_KEYの設定が正しいはずなのに"network-request-failed"に。
 
-![error](./images/0010_01.png)
+![error](https://github.com/fugithora812/nextjs-tutorial/blob/809cbda60ed40789a9e24a18be678f97b0eb83c0/doc/articles/images/0010_01.png?raw=true)
 
 ## 真実はシンプルだった
 
@@ -81,7 +81,7 @@ export default LoginForm;
 
 ということで、私は囲っているformタグを削除してエラー解消に成功しました。
 
-![login_ok](images/0010_02.png)
+![login_ok](https://github.com/fugithora812/nextjs-tutorial/blob/809cbda60ed40789a9e24a18be678f97b0eb83c0/doc/articles/images/0010_02.png?raw=true)
 
 ちなみにこのエラーは「認証の処理中にページの更新が走った」ことが本質的な原因ですが、handleLoginをformタグの`onSubmit`で呼び出すことでは回避できませんでした。多分非同期処理を書いた関数をawaitつけずに呼んでるからだとおもう。
 
