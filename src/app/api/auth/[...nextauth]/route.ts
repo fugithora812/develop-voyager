@@ -8,6 +8,7 @@ const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       credentials: {},
+      secret: process.env.NEXT_AUTH_SECRET,
       // @ts-expect-error eslint-disable-line
       authorize: async ({ idToken }: any, _req) => {
         if (typeof idToken === 'string') {
