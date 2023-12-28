@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-const isMaintenanceMode = Boolean(process.env.NEXT_PUBLIC_MAINTENANCE_MODE);
+const isMaintenanceMode = false; // Boolean(process.env.NEXT_PUBLIC_MAINTENANCE_MODE);
 
 // ログイン不要でアクセスできるページ
 const publicPaths = ['/', '/login', '/maintenance'];
