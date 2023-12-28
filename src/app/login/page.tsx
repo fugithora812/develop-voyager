@@ -10,11 +10,11 @@ const Login: NextPage = () => {
   return (
     <>
       <div className="w-full h-screen bg-gray-100 dark:bg-slate-900">
-      <Header />
-      <div className='flex justify-center items-center h-[85vh]'>
-        <LoginForm />
-      </div>
-      <Footer />
+        <Header />
+        <div className="flex justify-center items-center h-[85vh]">
+          <LoginForm />
+        </div>
+        <Footer />
       </div>
     </>
   );

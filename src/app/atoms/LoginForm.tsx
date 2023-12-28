@@ -1,26 +1,33 @@
 'use client';
 import React from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signIn as signInByNextAuth } from 'next-auth/react';
 
 import { auth } from '@/firebase/client';
 
 const LoginForm = (): React.ReactElement => {
-  const [email, setEmail] = React.useState('test@example.com');
-  const [password, setPassword] = React.useState('password');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  // ユーザーがログインボタンを押したときにdoLogin関数が実行される
   const handleLogin = async (): Promise<void> => {
-    // Firebaseで用意されているメールアドレスとパスワードでログインするための関数
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+    const user = await signInWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
         const user = userCredential.user;
-        // ログインができたかどうかをわかりやすくするためのアラート
-        alert('ログインOK!');
-        console.log(user);
+        return user;
       })
       .catch((error) => {
-        console.log(error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        return null;
       });
+    if (user === null) return;
+    const idToken = await user.getIdToken();
+
+    await signInByNextAuth('credentials', {
+      idToken,
+      callbackUrl: '/admin/dashboard',
+    });
   };
 
   return (
