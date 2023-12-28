@@ -36,7 +36,7 @@ export const middleware = async (request: NextRequest): Promise<NextResponse | u
     return;
   }
 
-  const res = await fetch(`${request.nextUrl.origin}/api/idToken`, {
+  const res = await fetch(`${process.env.NEXT_BASE_URL}/api/idToken`, {
     method: 'POST',
     body: JSON.stringify({ idToken: cookies().get('next-auth.session-token')?.value }),
   })
