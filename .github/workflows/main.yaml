@@ -53,7 +53,7 @@ jobs:
         run: |
           echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}" >> .env.local
           echo "NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}" >> .env.local
-          echo "NEXT_AUTH_SECRET=${NEXT_AUTH_SECRET}" >> .env.local
+          echo "NEXTAUTH_SECRET=${NEXT_AUTH_SECRET}" >> .env.local
           echo ${FIREBASE_SECRET_KEY} > firebaseSecretKey.json
           make build
           make deploy-ci
