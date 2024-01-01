@@ -9,7 +9,7 @@ const publicPaths = ['/', '/login', '/maintenance'];
 const publicPathPrefixes = ['/articles'];
 
 export const middleware = async (request: NextRequest): Promise<NextResponse | undefined> => {
-  console.log('[middleware] request.url:', request.url);
+  console.log('[middleware] request.nextUrl:', JSON.stringify(request.nextUrl));
   if (isMaintenanceMode) {
     // 繰り返しリダイレクトを防ぐ
     if (request.nextUrl.pathname === '/maintenance') return;
@@ -24,19 +24,16 @@ export const middleware = async (request: NextRequest): Promise<NextResponse | u
     request.nextUrl.pathname = '/404';
     return NextResponse.rewrite(request.nextUrl);
   }
-  if (request.nextUrl.pathname === '/login') return;
 
-  // ログイン不要でアクセスできるページかどうか
-  const isPublicPath =
-    publicPathPrefixes.some((path) => request.nextUrl.pathname.startsWith(path)) &&
-    publicPaths.some((path) => request.nextUrl.pathname === path);
-
-  if (isPublicPath) {
+  // ログイン不要でアクセスできるページかどうかを判定
+  const isPublicPath = publicPaths.some((path) => request.nextUrl.pathname === path);
+  const hasPublicPrefix = publicPathPrefixes.some((path) => request.nextUrl.pathname.startsWith(path));
+  if (isPublicPath || hasPublicPrefix) {
     console.info(`"${request.nextUrl.pathname ?? ''}" is public path.`);
     return;
   }
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/idToken`, {
+  const res = await fetch(`${request.nextUrl.origin}/api/idToken`, {
     method: 'POST',
     body: JSON.stringify({ idToken: cookies().get('next-auth.session-token')?.value }),
   })
