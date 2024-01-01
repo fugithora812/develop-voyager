@@ -26,7 +26,7 @@ const LoginForm = (): React.ReactElement => {
 
     await signInByNextAuth('credentials', {
       idToken,
-      callbackUrl: '/admin/dashboard',
+      callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/admin/dashboard`,
     });
   };
 
