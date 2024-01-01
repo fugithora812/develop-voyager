@@ -66,6 +66,11 @@ const LoginForm = (): React.ReactElement => {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleLogin(); // eslint-disable-line
+                }
+              }}
               placeholder="Your email"
               className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             />
@@ -90,6 +95,11 @@ const LoginForm = (): React.ReactElement => {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleLogin(); // eslint-disable-line
+                }
+              }}
               placeholder="Your password"
               className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             />
@@ -108,6 +118,11 @@ const LoginForm = (): React.ReactElement => {
         <div className="flex w-full">
           <button
             onClick={handleLogin} // eslint-disable-line
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleLogin(); // eslint-disable-line
+              }
+            }}
             className="py-2 px-4  bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
           >
             Login
