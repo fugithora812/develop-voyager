@@ -14,11 +14,6 @@ const LoginForm = (): React.ReactElement => {
   // ref: https://stackoverflow.com/questions/76191324/next-13-4-error-next-redirect-in-api-routes
   const router = useRouter();
 
-  React.useEffect(() => {
-    console.log('============= LoginForm =============');
-    console.log('NEXT_PUBLIC_BASE_URL:', process.env.NEXT_PUBLIC_BASE_URL);
-  }, []);
-
   const handleLogin = async (): Promise<void> => {
     const user = await signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
@@ -37,15 +32,13 @@ const LoginForm = (): React.ReactElement => {
     await signInByNextAuth('credentials', {
       idToken,
       redirect: false, // 本番でlocalhostにredirectされてしまうのでfalseに
-    })
-    .then((res) => {
+    }).then((res) => {
       console.log('signInByNextAuth res:', JSON.stringify(res));
       if (typeof res === 'undefined') return;
       if (res.status === 200) {
         router.push('/admin/dashboard');
       }
-    })
-    ;
+    });
   };
 
   return (
