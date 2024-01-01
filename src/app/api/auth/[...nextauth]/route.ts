@@ -34,7 +34,8 @@ const authOptions: NextAuthOptions = {
     // @ts-expect-error eslint-disable-line
     async session({ session, token }) {
       console.log('============== api/v1/auth/[slug]/route.ts ==============');
-      console.log('session:', session, ', token:', token);
+      console.log('session:', JSON.stringify(session));
+      console.log('token:', JSON.stringify(token));
 
       if (typeof session.user === 'undefined') {
         console.error('session.user is undefined.');
