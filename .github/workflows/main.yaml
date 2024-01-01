@@ -13,7 +13,6 @@ jobs:
     name: AWS deployment
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -48,8 +47,16 @@ jobs:
       - name: Deploy
         env:
           AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+          NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
+          NEXT_AUTH_SECRET: ${{ secrets.NEXT_AUTH_SECRET }}
+          FIREBASE_SECRET_KEY: ${{ secrets.FIREBASE_SECRET_KEY }}
+          NEXT_PUBLIC_BASE_URL: https://d3fb068sqi1zbm.cloudfront.net
         run: |
           echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}" >> .env.local
+          echo "NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}" >> .env.local
+          echo "NEXTAUTH_SECRET=${NEXT_AUTH_SECRET}" >> .env.local
+          echo "NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}" >> .env.local
+          echo ${FIREBASE_SECRET_KEY} > firebaseSecretKey.json
           make build
           make deploy-ci
           rm .env.local
