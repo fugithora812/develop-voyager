@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 import { signIn as signInByNextAuth } from 'next-auth/react';
 
 import { auth } from '@/firebase/client';
@@ -8,6 +9,15 @@ import { auth } from '@/firebase/client';
 const LoginForm = (): React.ReactElement => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  // next/navigationのredirectがうまく動かないので、一旦routerに変更
+  // ref: https://stackoverflow.com/questions/76191324/next-13-4-error-next-redirect-in-api-routes
+  const router = useRouter();
+
+  React.useEffect(() => {
+    console.log('============= LoginForm =============');
+    console.log('NEXT_PUBLIC_BASE_URL:', process.env.NEXT_PUBLIC_BASE_URL);
+  }, []);
 
   const handleLogin = async (): Promise<void> => {
     const user = await signInWithEmailAndPassword(auth, email, password)
@@ -26,8 +36,16 @@ const LoginForm = (): React.ReactElement => {
 
     await signInByNextAuth('credentials', {
       idToken,
-      callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/admin/dashboard`,
-    });
+      redirect: false, // 本番でlocalhostにredirectされてしまうのでfalseに
+    })
+    .then((res) => {
+      console.log('signInByNextAuth res:', JSON.stringify(res));
+      if (typeof res === 'undefined') return;
+      if (res.status === 200) {
+        router.push('/admin/dashboard');
+      }
+    })
+    ;
   };
 
   return (
