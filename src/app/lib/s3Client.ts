@@ -2,16 +2,15 @@ import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { fromSSO, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 
 const isProd = process.env.NODE_ENV === 'production';
+const roleArn = process.env.AWS_ROLE_ARN;
+const hasRoleArn = typeof roleArn === 'string' && roleArn.length > 0;
 console.log('====================== s3Client.ts ======================');
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
-console.log('isProd:', isProd);
 console.log('process.env.AWS_ROLE_ARN:', process.env.AWS_ROLE_ARN);
 console.log('process.env.AWS_CI_ROLE_ARN:', process.env.AWS_CI_ROLE_ARN);
+console.log('isProd:', isProd);
+console.log('hasRoleArn:', hasRoleArn);
 console.log('==========================================================');
-
-const roleArn =
-  typeof process.env.AWS_CI_ROLE_ARN === 'string' ? process.env.AWS_CI_ROLE_ARN : process.env.AWS_ROLE_ARN;
-const hasRoleArn = typeof roleArn === 'string' && roleArn.length > 0;
 
 const client =
   isProd && hasRoleArn
