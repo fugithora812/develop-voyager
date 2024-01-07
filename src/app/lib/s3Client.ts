@@ -9,7 +9,8 @@ console.log('process.env.AWS_ROLE_ARN:', process.env.AWS_ROLE_ARN);
 console.log('process.env.AWS_CI_ROLE_ARN:', process.env.AWS_CI_ROLE_ARN);
 console.log('==========================================================');
 
-const roleArn = typeof process.env.AWS_CI_ROLE_ARN === 'string' ? process.env.AWS_CI_ROLE_ARN : process.env.AWS_ROLE_ARN;
+const roleArn =
+  typeof process.env.AWS_CI_ROLE_ARN === 'string' ? process.env.AWS_CI_ROLE_ARN : process.env.AWS_ROLE_ARN;
 
 const client = isProd
   ? new S3Client({
