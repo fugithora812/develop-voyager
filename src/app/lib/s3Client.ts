@@ -3,7 +3,7 @@ import { fromSSO, fromTemporaryCredentials } from '@aws-sdk/credential-providers
 
 const isProd = process.env.NODE_ENV === 'production';
 const roleArn = process.env.AWS_ROLE_ARN;
-const hasRoleArn = typeof roleArn === 'string' && roleArn.length > 0;
+const hasRoleArn = typeof roleArn !== 'undefined' || roleArn !== 'undefined';
 console.log('====================== s3Client.ts ======================');
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
 console.log('process.env.AWS_ROLE_ARN:', process.env.AWS_ROLE_ARN);
