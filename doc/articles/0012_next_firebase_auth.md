@@ -246,6 +246,10 @@ const LoginForm = (): React.ReactElement => {
 export default LoginForm;
 ```
 
+これでログイン画面っぽいものができました。
+
+![login_form_ui](https://storage.googleapis.com/zenn-user-upload/49dd4fd75fe7-20240107.png)
+
 ### ちなみに
 
 LoginFormでimportしている@/firebase/clientは以下のような実装をしています。
