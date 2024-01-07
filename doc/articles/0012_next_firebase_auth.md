@@ -16,7 +16,7 @@
 
 先に、実装全体のイメージをシーケンス図でお見せします。
 
-![sequence](/articles/0012/0012_01.png)
+![firebase_auth_sequence](https://storage.googleapis.com/zenn-user-upload/b99f3b80b1ff-20240107.png)
 
 ### ↑の図の補足説明
 
