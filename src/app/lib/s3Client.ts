@@ -11,25 +11,29 @@ console.log('==========================================================');
 
 const roleArn =
   typeof process.env.AWS_CI_ROLE_ARN === 'string' ? process.env.AWS_CI_ROLE_ARN : process.env.AWS_ROLE_ARN;
+const hasRoleArn = typeof roleArn === 'string' && roleArn.length > 0;
 
-const client = isProd
-  ? new S3Client({
-      region: 'us-east-1',
-      credentials: fromTemporaryCredentials({
-        params: {
-          RoleArn: roleArn ?? '',
-          RoleSessionName: 'nextjs-s3-client',
-          DurationSeconds: 3600,
-        },
-        clientConfig: { region: 'us-east-1' },
-      }),
-    })
-  : new S3Client({
-      region: 'us-east-1',
-      credentials: fromSSO({
-        profile: 'personal-sso-access',
-      }),
-    });
+const client =
+  isProd && hasRoleArn
+    ? new S3Client({
+        region: 'us-east-1',
+        credentials: fromTemporaryCredentials({
+          params: {
+            RoleArn: roleArn ?? '',
+            RoleSessionName: 'nextjs-s3-client',
+            DurationSeconds: 3600,
+          },
+          clientConfig: { region: 'us-east-1' },
+        }),
+      })
+    : isProd && !hasRoleArn
+      ? new S3Client({ region: 'us-east-1' })
+      : new S3Client({
+          region: 'us-east-1',
+          credentials: fromSSO({
+            profile: 'personal-sso-access',
+          }),
+        });
 
 export const getObject = async (bucketName: string, objectPath: string): Promise<string | undefined> => {
   console.log('================== getObject ==================');
