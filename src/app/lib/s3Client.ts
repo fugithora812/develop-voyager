@@ -6,14 +6,17 @@ console.log('====================== s3Client.ts ======================');
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
 console.log('isProd:', isProd);
 console.log('process.env.AWS_ROLE_ARN:', process.env.AWS_ROLE_ARN);
+console.log('process.env.AWS_CI_ROLE_ARN:', process.env.AWS_CI_ROLE_ARN);
 console.log('==========================================================');
+
+const roleArn = typeof process.env.AWS_CI_ROLE_ARN === 'string' ? process.env.AWS_CI_ROLE_ARN : process.env.AWS_ROLE_ARN;
 
 const client = isProd
   ? new S3Client({
       region: 'us-east-1',
       credentials: fromTemporaryCredentials({
         params: {
-          RoleArn: process.env.AWS_ROLE_ARN ?? '',
+          RoleArn: roleArn ?? '',
           RoleSessionName: 'nextjs-s3-client',
           DurationSeconds: 3600,
         },
