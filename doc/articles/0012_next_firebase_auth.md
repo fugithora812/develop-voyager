@@ -137,7 +137,7 @@ const LoginForm = (): React.ReactElement => {
       console.log('signInByNextAuth res:', JSON.stringify(res));
       if (typeof res === 'undefined') return;
       if (res.status === 200) {
-        router.push('/admin/dashboard');
+        router.push('/top');
       }
     });
   };
@@ -276,6 +276,26 @@ export const auth = getAuth(app);
 
 NEXT_PUBLIC_API_KEY等に設定すべき値は「[\[React + Firebase Authentication\]（前編）reactプロジェクトの作成とfirebaseの初期設定](https://tech-lab.sios.jp/archives/31047#Firebase_SDK)」など、詳しく書かれた記事があるのでそちらをご覧ください🙏
 
+## SessionProviderの実装
+
+> NextAuthはクライアントコードでsessionを閲覧(useSession()を利用)するために、SessionProviderでラップしておく必要があります。
+from: [【Next.js】NextAuth×Firebaseで認証管理 in appディレクトリ](https://zenn.dev/tentel/articles/cc76611f4010c9)
+
+↑の理由により、ここでSessionProviderの準備をしていきます。
+
+```tsx:src/app/components/Providers.tsx
+'use client';
+import React from 'react';
+import { type FC, type PropsWithChildren } from 'react';
+import { SessionProvider } from 'next-auth/react';
+
+export const Providers: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <SessionProvider>{children}</SessionProvider>
+  );
+};
+```
+
 ## APIの実装
 
 では、サーバサイドで稼働するAPIを準備していきます。
@@ -394,13 +414,13 @@ export const auth = getAuth();
 
 ## TopPageの実装
 
-ログイン後にアクセスする想定のトップページを作成します。以下ではパスを`/admin/dashboard`とし、サンプル的なモック実装を行っています。
+ログイン後にアクセスする想定のトップページを作成します。以下ではパスを`/top`とし、サンプル的なモック実装を行っています。
 
-```tsx:src/app/admin/dashboard/page.tsx
+```tsx:src/app/top/page.tsx
 import React from 'react';
 import { type NextPage } from 'next';
 
-const AdminDashboardPage: NextPage = () => {
+const TopPage: NextPage = () => {
   return (
     <>
       <main className="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-2xl">
@@ -513,7 +533,7 @@ const AdminDashboardPage: NextPage = () => {
   );
 };
 
-export default AdminDashboardPage;
+export default TopPage;
 ```
 
 これで実装完了です。
