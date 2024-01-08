@@ -6,8 +6,6 @@ const roleArn = process.env.AWS_CI_ROLE_ARN;
 const hasRoleArn = typeof roleArn !== 'undefined';
 console.log('====================== s3Client.ts ======================');
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
-console.log('process.env.AWS_ROLE_ARN:', process.env.AWS_ROLE_ARN);
-console.log('process.env.AWS_CI_ROLE_ARN:', process.env.AWS_CI_ROLE_ARN);
 console.log('isProd:', isProd);
 console.log('hasRoleArn:', hasRoleArn);
 console.log('==========================================================');
