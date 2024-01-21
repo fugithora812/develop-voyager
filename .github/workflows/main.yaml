@@ -1,4 +1,4 @@
-name: Check format & lint AWS deployment
+name: Check format & lint
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
@@ -9,7 +9,7 @@ permissions:
   contents: read
   pull-requests: write
 jobs:
-  deploy:
+  check-format-lint:
     name: AWS deployment
     runs-on: ubuntu-latest
     steps:
@@ -44,7 +44,7 @@ jobs:
       - name: Install dependencies
         if: ${{ steps.cache_cdk_dependency_id.outputs.cache-hit != 'true' }}
         run: npm ci
-      - name: Deploy
+      - name: Check format & lint
         env:
           AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
           AWS_CI_ROLE_ARN: ${{ secrets.AWS_CI_ROLE_ARN }}
@@ -58,6 +58,6 @@ jobs:
           echo "NEXTAUTH_SECRET=${NEXT_AUTH_SECRET}" >> .env.local
           echo "NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}" >> .env.local
           echo ${FIREBASE_SECRET_KEY} > firebaseSecretKey.json
-          make build-ci AWS_CI_ROLE_ARN=${AWS_CI_ROLE_ARN}
-          make deploy-ci
+          npm run check:prettier
+          npm run check:eslint
           rm .env.local
