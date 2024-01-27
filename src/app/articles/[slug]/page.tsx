@@ -18,7 +18,7 @@ const ArticlePage: NextPage<Props> = async ({ params }: Props): Promise<React.Re
       <Suspense
         fallback={
           <div className="bg-gray-100 dark:bg-slate-900 h-screen">
-            <span className="loading loading-dots loading-lg absolute inset-x-[50%] inset-y-[60%] dark:text-slate-30" />
+            <span className="loading loading-dots loading-lg absolute inset-x-[50%] inset-y-[60%] dark:text-gray-100" />
           </div>
         }
       >
