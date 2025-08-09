@@ -188,7 +188,12 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
                   <p>{quote}</p>
                   <cite className={citeStyle}>
                     出典：
-                    <a href={href} className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">{cite}</a>
+                    <a
+                      href={href}
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                    >
+                      {cite}
+                    </a>
                   </cite>
                 </blockquote>
               );
