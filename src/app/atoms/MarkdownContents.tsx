@@ -68,7 +68,7 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
     <>
       {isToc && (
         <ReactMarkdown
-          className="md:prose-md dark:prose-invert col-start-1 sticky top-[92px]"
+          className="md:prose-md dark:prose-invert"
           allowedElements={['h2']}
           components={components}
         >
