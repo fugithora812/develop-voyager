@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ArticleCard from './atoms/articleCard';
+import ArticleCard from './atoms/ArticleCard';
 import Footer from './atoms/footer';
 import Header from './atoms/header';
 import { type ArticleMetadata, getAllArticles } from './lib/dynamoDbClient';
