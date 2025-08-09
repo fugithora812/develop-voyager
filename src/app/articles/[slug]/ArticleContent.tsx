@@ -35,10 +35,10 @@ const ArticleContent: NextPage<Props> = async ({ slug }: Props): Promise<React.R
 
       <div className="grid gap-8 md:grid-cols-[20%_60%] lg:gap-12">
         <ol className="p-2 md:p-4 ml-2 md:col-start-1">
-          <h2 className="text-gray-800 dark:text-slate-300 underline sticky top-16 max-[1010px]:hidden">
+          <h2 className="text-gray-800 dark:text-slate-300 underline sticky top-20 max-[1010px]:hidden">
             🖌️ Table of Contents
           </h2>
-          <h2 className="text-gray-800 dark:text-slate-300 underline sticky top-16 min-[1010px]:hidden">🖌️ TOC</h2>
+          <h2 className="text-gray-800 dark:text-slate-300 underline sticky top-20 min-[1010px]:hidden">🖌️ TOC</h2>
           <MarkdownContents content={data} isToc />
         </ol>
         <div className="col-start-2">

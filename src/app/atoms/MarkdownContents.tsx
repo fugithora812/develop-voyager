@@ -68,7 +68,7 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
     <>
       {isToc && (
         <ReactMarkdown
-          className="md:prose-md dark:prose-invert col-start-1 sticky top-[88px]"
+          className="md:prose-md dark:prose-invert col-start-1 sticky top-[92px]"
           allowedElements={['h2']}
           components={components}
         >
@@ -188,7 +188,12 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
                   <p>{quote}</p>
                   <cite className={citeStyle}>
                     出典：
-                    <a href={href}>{cite}</a>
+                    <a
+                      href={href}
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                    >
+                      {cite}
+                    </a>
                   </cite>
                 </blockquote>
               );
