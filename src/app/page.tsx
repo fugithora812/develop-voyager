@@ -1,10 +1,10 @@
 import React from 'react';
 
-import ArticleCard from './atoms/ArticleCard';
-import Footer from './atoms/footer';
-import Header from './atoms/header';
-import { type ArticleMetadata, getAllArticles } from './lib/dynamoDbClient';
-import isLatestArticle from './lib/isLatestArticle';
+import ArticleCard from '@/app/atoms/ArticleCard';
+import Footer from '@/app/atoms/footer';
+import Header from '@/app/atoms/header';
+import { type ArticleMetadata, getAllArticles } from '@/app/lib/dynamoDbClient';
+import isLatestArticle from '@/app/lib/isLatestArticle';
 
 const Home = async (): Promise<React.ReactElement> => {
   const articles = await getAllArticles();
