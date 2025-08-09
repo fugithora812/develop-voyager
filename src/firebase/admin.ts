@@ -1,14 +1,24 @@
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
+// Firebase Admin SDK configuration for Vercel deployment
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getServiceAccount = (): any => {
+  const envKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+  if (typeof envKey === 'string' && envKey.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return JSON.parse(envKey);
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-var-requires
+  return require('../../firebaseSecretKey.json');
+};
+
 export const firebaseAdmin =
   getApps()[0] ??
   initializeApp({
-    credential: cert({
-      projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
-      privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-    }),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    credential: cert(getServiceAccount()),
   });
 
 export const auth = getAuth();
