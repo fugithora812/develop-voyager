@@ -1,6 +1,8 @@
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
+// Firebase Admin SDK configuration for Vercel deployment
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getServiceAccount = (): any => {
   const envKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
