@@ -10,7 +10,7 @@ const getServiceAccount = (): any => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return JSON.parse(envKey);
   }
-  
+
   // For local development, try to load the file if it exists
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-var-requires
