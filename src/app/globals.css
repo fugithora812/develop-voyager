@@ -19,6 +19,11 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+/* Stickyヘッダー対応：目次リンククリック時のスクロールオフセット調整 */
+html {
+  scroll-padding-top: 6.5rem; /* 104px - DevelopVoyagerヘッダー高さ分のオフセット */
+}
+
 /* 
 *
 * Markdown変換用のスタイル定義。
