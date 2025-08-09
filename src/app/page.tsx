@@ -8,14 +8,14 @@ import isLatestArticle from './lib/isLatestArticle';
 
 /**
  * ArticleCardコンポーネントの統合実装
- * 
+ *
  * 【経緯】
  * - 元々 ./atoms/ArticleCard から import していた
  * - Vercelデプロイ時に "Module not found: Can't resolve './atoms/ArticleCard'" エラーが発生
  * - ローカルビルドでは成功するが、Vercel環境でのみ失敗する問題
  * - 絶対パス (@/app/atoms/ArticleCard) でも同様のエラーが発生
  * - モジュール解決問題を回避するため、コンポーネントを直接埋め込み
- * 
+ *
  * 【元のファイル】src/app/atoms/ArticleCard.tsx の内容を統合
  * 【実装日】2025-08-09 スティッキーヘッダー機能実装時
  */
@@ -28,17 +28,21 @@ interface ArticleCardProps {
   latest?: boolean;
 }
 
-const ArticleCard = ({ imageUrl, category, title, description, href, latest }: ArticleCardProps): React.ReactElement => {
+const ArticleCard = ({
+  imageUrl,
+  category,
+  title,
+  description,
+  href,
+  latest,
+}: ArticleCardProps): React.ReactElement => {
   return (
     <div
       className={`${latest === true ? 'w-full' : 'w-[49%]'}
   flex flex-col items-center my-6 space-y-4 md:space-x-4 md:space-y-0 md:flex-row relative`}
     >
       <div className="m-auto overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-full ">
-        <Link
-          href={href}
-          className="w-inherit block h-full"
-        >
+        <Link href={href} className="w-inherit block h-full">
           {/* eslint-disable-next-line */}
           <img alt="blog photo" src={imageUrl} className="object-cover w-full h-40" />
           <div className="w-100 p-4 bg-white dark:bg-gray-800 break-words">
