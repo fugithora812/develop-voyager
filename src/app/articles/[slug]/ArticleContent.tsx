@@ -1,11 +1,10 @@
 import React from 'react';
 import { type NextPage } from 'next';
 import { redirect } from 'next/navigation';
-import path from 'path';
 
 import MarkdownContents from '@/app/atoms/MarkdownContents';
 import { getArticleByPrimaryKey } from '@/app/lib/dynamoDbClient';
-import { getMarkdownData } from '@/app/lib/markdown';
+import { getObject } from '@/app/lib/s3Client';
 
 interface Props {
   slug: string;
@@ -15,12 +14,8 @@ const ArticleContent: NextPage<Props> = async ({ slug }: Props): Promise<React.R
   const articleId = slug.slice(0, 4);
   const article = await getArticleByPrimaryKey(articleId, `/articles/${slug}`);
   const imageUrl = article?.imageUrl;
-  const pathToContent = path.join(process.cwd(), 'doc', `${article?.href}.md`);
-  let content;
-  try {
-    content = await getMarkdownData(pathToContent);
-  } catch (error) {
-    console.error(error);
+  const data = await getObject('tech-blog-articles-storage', `articles/${slug}.md`);
+  if (typeof data === 'undefined') {
     redirect('/404');
   }
 
@@ -44,10 +39,10 @@ const ArticleContent: NextPage<Props> = async ({ slug }: Props): Promise<React.R
             🖌️ Table of Contents
           </h2>
           <h2 className="text-gray-800 dark:text-slate-300 underline sticky top-16 min-[1010px]:hidden">🖌️ TOC</h2>
-          <MarkdownContents content={content} isToc />
+          <MarkdownContents content={data} isToc />
         </ol>
         <div className="col-start-2">
-          <MarkdownContents content={content} />
+          <MarkdownContents content={data} />
         </div>
       </div>
     </>

@@ -15,6 +15,11 @@ build:
 	npm run build \
 	&& docker build -t nextjs_tutorial .
 
+AWS_CI_ROLE_ARN=""
+build-ci:
+	AWS_CI_ROLE_ARN=${AWS_CI_ROLE_ARN} npm run build \
+	&& docker build -t nextjs_tutorial .
+
 run:
 	docker run --name nextjs_tutorial --rm -d -p 3000:3000 nextjs_tutorial
 
