@@ -1,5 +1,6 @@
+'use client';
 /* eslint-disable react/no-multi-comp */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import Footer from './atoms/footer';
@@ -60,11 +61,63 @@ const ArticleCard = ({
   );
 };
 
-const Home = async (): Promise<React.ReactElement> => {
-  const articles = await getAllArticles();
-  articles.sort((a: ArticleMetadata, b: ArticleMetadata) => {
-    return a.createdAt < b.createdAt ? 1 : -1;
-  });
+const Home = (): React.ReactElement => {
+  const [articles, setArticles] = useState<ArticleMetadata[]>([]);
+  const [filteredArticles, setFilteredArticles] = useState<ArticleMetadata[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [categories, setCategories] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchArticles = async (): Promise<void> => {
+      try {
+        const fetchedArticles = await getAllArticles();
+        fetchedArticles.sort((a: ArticleMetadata, b: ArticleMetadata) => {
+          return a.createdAt < b.createdAt ? 1 : -1;
+        });
+
+        setArticles(fetchedArticles);
+        setFilteredArticles(fetchedArticles);
+
+        // カテゴリー一覧を取得
+        const uniqueCategories = Array.from(new Set(fetchedArticles.map((article) => article.category)));
+        setCategories(uniqueCategories);
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch articles:', error);
+        setIsLoading(false);
+      }
+    };
+
+    void fetchArticles();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCategory === 'all') {
+      setFilteredArticles(articles);
+    } else {
+      const filtered = articles.filter((article) => article.category === selectedCategory);
+      setFilteredArticles(filtered);
+    }
+  }, [selectedCategory, articles]);
+
+  const handleCategoryChange = (category: string): void => {
+    setSelectedCategory(category);
+  };
+
+  if (isLoading) {
+    return (
+      <>
+        <Header />
+        <main className="relative h-fit bg-gray-100 dark:bg-slate-900 dark:text-slate-300">
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="text-xl">Loading...</div>
+          </div>
+        </main>
+      </>
+    );
+  }
 
   return (
     <>
@@ -80,12 +133,13 @@ const Home = async (): Promise<React.ReactElement> => {
                 Here&#x27;s List of Articles
               </h2>
               <div className="flex items-center space-x-4 mx-40 mt-3">
-                <div className="tooltip" data-tip="This is unavailable for now.">
-                  <button
-                    disabled
-                    className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 rounded-r-full rounded-tl-sm rounded-bl-full text-md"
+                <div className="dropdown">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 rounded-r-full rounded-tl-sm rounded-bl-full text-md hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
                   >
-                    Select Category
+                    {selectedCategory === 'all' ? 'Select Category' : selectedCategory}
                     <svg
                       width="20"
                       height="20"
@@ -96,12 +150,40 @@ const Home = async (): Promise<React.ReactElement> => {
                     >
                       <path d="M1408 704q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45z"></path>
                     </svg>
-                  </button>
+                  </div>
+                  <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                    <li>
+                      <a
+                        onClick={() => {
+                          handleCategoryChange('all');
+                        }}
+                        className={selectedCategory === 'all' ? 'active' : ''}
+                      >
+                        All Categories
+                      </a>
+                    </li>
+                    {categories.map((category) => (
+                      <li key={category}>
+                        <a
+                          onClick={() => {
+                            handleCategoryChange(category);
+                          }}
+                          className={selectedCategory === category ? 'active' : ''}
+                        >
+                          {category}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Displayed All Articles Now.</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  {selectedCategory === 'all'
+                    ? `Displayed All Articles (${filteredArticles.length})`
+                    : `Filtered by "${selectedCategory}" (${filteredArticles.length})`}
+                </span>
               </div>
               <div className="flex flex-wrap items-center min-[1170px]:justify-between gap-1 mx-40">
-                {articles.map((article: ArticleMetadata) => (
+                {filteredArticles.map((article: ArticleMetadata) => (
                   <ArticleCard
                     key={article.href}
                     imageUrl={article.imageUrl}
@@ -109,10 +191,18 @@ const Home = async (): Promise<React.ReactElement> => {
                     title={article.title}
                     description={article.description}
                     href={article.href}
-                    latest={isLatestArticle(article, articles)}
+                    latest={isLatestArticle(article, filteredArticles)}
                   />
                 ))}
               </div>
+              {filteredArticles.length === 0 && (
+                <div className="flex items-center justify-center mt-12">
+                  <div className="text-center">
+                    <p className="text-xl text-gray-600 dark:text-gray-400">該当する記事が見つかりませんでした</p>
+                    <p className="text-md text-gray-500 dark:text-gray-500 mt-2">別のカテゴリーを選択してください</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
