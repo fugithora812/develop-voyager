@@ -10,8 +10,6 @@
   },
   "extends": [
     "next/core-web-vitals",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
     "standard-with-typescript",
     "prettier"
   ],
@@ -70,8 +68,6 @@
     "project": "./tsconfig.json"
   },
   "plugins": [
-    "react",
-    "react-hooks",
     "@typescript-eslint",
     "simple-import-sort"
   ],
