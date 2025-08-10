@@ -6,11 +6,11 @@ import Footer from '@/app/atoms/footer';
 import Header from '@/app/atoms/header';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 const ArticlePage: NextPage<Props> = async ({ params }: Props): Promise<React.ReactElement> => {
-  const { slug } = params;
+  const { slug } = await params;
 
   return (
     <div className="text-gray-900 bg-gray-100 dark:bg-slate-900 dark:text-slate-30">
