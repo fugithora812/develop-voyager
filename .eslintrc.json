@@ -10,9 +10,6 @@
   },
   "extends": [
     "next/core-web-vitals",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "standard-with-typescript",
     "prettier"
   ],
   "overrides": [
@@ -66,13 +63,7 @@
       }
     }
   ],
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
   "plugins": [
-    "react",
-    "react-hooks",
-    "@typescript-eslint",
     "simple-import-sort"
   ],
   "ignorePatterns": [
@@ -81,17 +72,7 @@
     "next-env.d.ts"
   ],
   "rules": {
-    "react/jsx-boolean-value": "error",
-    "react/jsx-curly-brace-presence": "error",
-    "react/jsx-pascal-case": "error",
-    "react/no-multi-comp": "error",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "semi": [
-      "warn",
-      "always"
-    ]
+    "simple-import-sort/exports": "error"
   }
 }

@@ -33,9 +33,10 @@ export const middleware = async (request: NextRequest): Promise<NextResponse | u
     return;
   }
 
+  const cookieStore = await cookies();
   const res = await fetch(`${request.nextUrl.origin}/api/idToken`, {
     method: 'POST',
-    body: JSON.stringify({ idToken: cookies().get('next-auth.session-token')?.value }),
+    body: JSON.stringify({ idToken: cookieStore.get('next-auth.session-token')?.value }),
   })
     .then((res) => {
       console.log('[middleware] res:', res.status, res.statusText);

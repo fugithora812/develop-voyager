@@ -78,7 +78,7 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
               const addRowNumbers: number[] = [];
               const deleteRowNumbers: number[] = [];
               let code = '';
-              const codeRows = String(props.children).split(/\n/);
+              const codeRows = String(props.children ?? '').split(/\n/);
               const excludedPrefixCodeRows = codeRows.map((codeRow, index) => {
                 if (/^\+.*$/.test(codeRow)) {
                   addRowNumbers.push(index + 1);
@@ -140,9 +140,9 @@ const MarkdownContents: NextPage<Props> = async ({ content, isToc = false }: Pro
             },
             h2({ ...props }) {
               return (
-                <h2 id={String(props.children).replace(/\n$/, '')} className="z-50 bg-gray-100 dark:bg-slate-900 group">
+                <h2 id={String(props.children ?? '').replace(/\n$/, '')} className="z-50 bg-gray-100 dark:bg-slate-900 group">
                   <a
-                    href={`#${String(props.children).replace(/\n$/, '')}`}
+                    href={`#${String(props.children ?? '').replace(/\n$/, '')}`}
                     className="inline-flex items-center py-1 text-base text-gray-900 duration-300 hover:text-stone-500 dark:text-stone-100 dark:hover:text-stone-300 opacity-0 group-hover:opacity-100 ml-[-25px]"
                   >
                     <HiLink className="mr-2" />
