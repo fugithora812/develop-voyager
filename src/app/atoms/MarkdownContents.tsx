@@ -35,21 +35,14 @@ const customH2 = ({ ...props }): React.ReactElement => {
     <li>
       <a
         href={`#${props.children}`}
-        className="inline-flex items-center py-1 text-base text-gray-900 duration-300 hover:text-stone-500 dark:text-stone-100 dark:hover:text-stone-300 md:text-lg max-[1130px]:hidden"
+        className="inline-flex items-center py-1 text-sm sm:text-base text-gray-900 duration-300 hover:text-stone-500 dark:text-stone-100 dark:hover:text-stone-300 lg:text-lg"
       >
-        <HiLink className="mr-2" />
-        {typeof props.children === 'string'
-          ? abbreviateString(props.children, { type: 'articleLongToc' })
-          : props.children}
-      </a>
-      <a
-        href={`#${props.children}`}
-        className="inline-flex items-center py-1 text-base text-gray-900 duration-300 hover:text-stone-500 dark:text-stone-100 dark:hover:text-stone-300 md:text-lg min-[1130px]:hidden"
-      >
-        <HiLink className="mr-2" />
-        {typeof props.children === 'string'
-          ? abbreviateString(props.children, { type: 'articleShortToc' })
-          : props.children}
+        <HiLink className="mr-1 sm:mr-2 flex-shrink-0" />
+        <span className="truncate">
+          {typeof props.children === 'string'
+            ? abbreviateString(props.children, { type: 'articleShortToc' })
+            : props.children}
+        </span>
       </a>
     </li>
   );
