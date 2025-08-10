@@ -130,3 +130,52 @@ html {
 .markdown .highlight pre {
   @apply dark:text-slate-300 bg-gray-100 !important;
 }
+
+/* Line clamp utilities for text truncation */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Responsive typography adjustments for mobile */
+@media (max-width: 640px) {
+  .markdown h1 {
+    @apply text-2xl sm:text-4xl;
+  }
+  
+  .markdown h2 {
+    @apply text-xl sm:text-2xl;
+  }
+  
+  .markdown h3 {
+    @apply text-lg;
+  }
+  
+  .markdown p, .markdown li {
+    @apply text-sm sm:text-base;
+  }
+  
+  .markdown pre {
+    @apply text-xs sm:text-sm;
+  }
+  
+  .markdown table {
+    @apply text-xs sm:text-sm;
+  }
+}

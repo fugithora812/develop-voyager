@@ -51,12 +51,16 @@ const Header: NextPage = (): React.ReactElement | null => {
         </div>
       </div>
       <div className="navbar-center">
-        <Link href="/" className="btn btn-ghost text-[40px] text-gray-900 dark:text-slate-300 font-[consolas]">
-          DevelopVoyager
+        <Link
+          href="/"
+          className="btn btn-ghost text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-900 dark:text-slate-300 font-[consolas] px-1 sm:px-2"
+        >
+          <span className="hidden sm:inline">DevelopVoyager</span>
+          <span className="sm:hidden">DevVoyager</span>
         </Link>
       </div>
       <div className="navbar-end">
-        <label className="mr-2 flex cursor-pointer gap-2">
+        <label className="mr-1 sm:mr-2 flex cursor-pointer gap-1 sm:gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -92,13 +96,17 @@ const Header: NextPage = (): React.ReactElement | null => {
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </label>
-        <a href="https://www.buymeacoffee.com/playdrumsj0" target="_blank" rel="noreferrer">
+        <a href="https://www.buymeacoffee.com/playdrumsj0" target="_blank" rel="noreferrer" className="hidden sm:block">
           {/* eslint-disable-next-line */}
           <img
             src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
             alt="Buy Me A Coffee"
-            className="h-[50px] w-[217px]"
+            className="h-8 sm:h-10 w-auto max-w-[120px] sm:max-w-[160px]"
           />
+        </a>
+        {/* モバイル用の簡略バージョン */}
+        <a href="https://www.buymeacoffee.com/playdrumsj0" target="_blank" rel="noreferrer" className="sm:hidden">
+          <div className="btn btn-sm btn-warning text-xs">☕ Support</div>
         </a>
       </div>
     </div>

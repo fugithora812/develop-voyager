@@ -40,20 +40,20 @@ const ArticleCard = ({
 }: ArticleCardProps): React.ReactElement => {
   return (
     <div
-      className={`${latest === true ? 'w-full' : 'w-[49%]'}
-  flex flex-col items-center my-6 space-y-4 md:space-x-4 md:space-y-0 md:flex-row relative`}
+      className={`${latest === true ? 'md:col-span-2 lg:col-span-2' : ''} 
+      flex flex-col space-y-4 md:space-x-4 md:space-y-0 ${latest === true ? 'md:flex-row' : ''} relative`}
     >
-      <div className="m-auto overflow-hidden rounded-lg shadow-lg cursor-pointer h-90 w-full ">
-        <Link href={href} className="w-inherit block h-full">
+      <div className="overflow-hidden rounded-lg shadow-lg cursor-pointer w-full">
+        <Link href={href} className="block h-full">
           {/* eslint-disable-next-line */}
-          <img alt="blog photo" src={imageUrl} className="object-cover w-full h-40" />
-          <div className="w-100 p-4 bg-white dark:bg-gray-800 break-words">
-            <div className="flex items-start mb-3">
-              <div className="badge badge-primary text-md">{category}</div>
-              {latest === true && <div className="badge badge-secondary ml-1">Latest</div>}
+          <img alt="blog photo" src={imageUrl} className="object-cover w-full h-32 sm:h-40" />
+          <div className="p-3 sm:p-4 bg-white dark:bg-gray-800 break-words">
+            <div className="flex items-start mb-2 sm:mb-3">
+              <div className="badge badge-primary text-xs sm:text-sm">{category}</div>
+              {latest === true && <div className="badge badge-secondary ml-1 text-xs sm:text-sm">Latest</div>}
             </div>
-            <p className="truncate mb-2 text-xl font-medium text-gray-800 dark:text-white">{title}</p>
-            <p className="truncate font-light text-gray-600 dark:text-gray-400 text-md ">{description}</p>
+            <p className="line-clamp-2 mb-2 text-lg sm:text-xl font-medium text-gray-800 dark:text-white">{title}</p>
+            <p className="line-clamp-2 font-light text-gray-600 dark:text-gray-400 text-sm sm:text-md">{description}</p>
           </div>
         </Link>
       </div>
@@ -173,22 +173,24 @@ const Home = (): React.ReactElement => {
       <Header />
       <main className="relative h-fit bg-gray-100 dark:bg-slate-900 dark:text-slate-300">
         <div className="flex items-start justify-between">
-          <div className="flex flex-col w-full min-[1170px]:space-y-4">
-            <div className="h-fit px-4 pb-24 min-[1170px]:px-6">
-              <h1 className="text-4xl font-semibold text-gray-800 dark:text-slate-300 text-center">
+          <div className="flex flex-col w-full space-y-4">
+            <div className="h-fit px-4 pb-24 sm:px-6">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-800 dark:text-slate-300 text-center">
                 Welcome To DevelopVoyager!
               </h1>
-              <h2 className="text-gray-600 dark:text-gray-400 text-md text-center font-semibold">
+              <h2 className="text-gray-600 dark:text-gray-400 text-sm sm:text-md text-center font-semibold">
                 Here&#x27;s List of Articles
               </h2>
-              <div className="flex items-center space-x-4 mx-40 mt-3">
-                <div className="dropdown">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mx-4 sm:mx-8 lg:mx-16 xl:mx-32 mt-3">
+                <div className="dropdown w-full sm:w-auto">
                   <div
                     tabIndex={0}
                     role="button"
-                    className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 rounded-r-full rounded-tl-sm rounded-bl-full text-md hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+                    className="flex items-center px-3 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 rounded-r-full rounded-tl-sm rounded-bl-full text-sm sm:text-md hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer w-full sm:w-auto"
                   >
-                    {selectedCategory === 'all' ? 'Select Category' : selectedCategory}
+                    <span className="truncate">
+                      {selectedCategory === 'all' ? 'Select Category' : selectedCategory}
+                    </span>
                     <svg
                       width="20"
                       height="20"
@@ -225,13 +227,13 @@ const Home = (): React.ReactElement => {
                     ))}
                   </ul>
                 </div>
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   {selectedCategory === 'all'
                     ? `Total: ${filteredArticles.length} articles (Page ${currentPage}/${totalPages})`
                     : `Filtered by "${selectedCategory}": ${filteredArticles.length} articles (Page ${currentPage}/${totalPages})`}
                 </span>
               </div>
-              <div className="flex flex-wrap items-center min-[1170px]:justify-between gap-1 mx-40">
+              <div className="flex flex-col sm:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mx-4 sm:mx-8 lg:mx-16 xl:mx-32 mt-6 sm:mt-8">
                 {paginatedArticles.map((article: ArticleMetadata) => (
                   <ArticleCard
                     key={article.href}
@@ -255,10 +257,10 @@ const Home = (): React.ReactElement => {
 
               {/* ページネーション */}
               {totalPages > 1 && (
-                <div className="flex justify-center mt-12">
+                <div className="flex justify-center mt-8 sm:mt-12 px-4">
                   <div className="join">
                     <button
-                      className={`join-item btn ${currentPage === 1 ? 'btn-disabled' : ''}`}
+                      className={`join-item btn btn-sm sm:btn-md ${currentPage === 1 ? 'btn-disabled' : ''}`}
                       onClick={() => {
                         handlePageChange(currentPage - 1);
                       }}
@@ -267,25 +269,75 @@ const Home = (): React.ReactElement => {
                       «
                     </button>
 
-                    {Array.from({ length: totalPages }, (_, index) => {
-                      const page = index + 1;
-                      const isActive = page === currentPage;
+                    {/* モバイルでは限られたページ数のみ表示 */}
+                    {totalPages <= 5 ? (
+                      // 5ページ以下は全て表示
+                      Array.from({ length: totalPages }, (_, index) => {
+                        const page = index + 1;
+                        const isActive = page === currentPage;
 
-                      return (
+                        return (
+                          <button
+                            key={page}
+                            className={`join-item btn btn-sm sm:btn-md ${isActive ? 'btn-active' : ''}`}
+                            onClick={() => {
+                              handlePageChange(page);
+                            }}
+                          >
+                            {page}
+                          </button>
+                        );
+                      })
+                    ) : (
+                      // 5ページ超えの場合は省略表示
+                      <>
                         <button
-                          key={page}
-                          className={`join-item btn ${isActive ? 'btn-active' : ''}`}
+                          className={`join-item btn btn-sm sm:btn-md ${currentPage === 1 ? 'btn-active' : ''}`}
                           onClick={() => {
-                            handlePageChange(page);
+                            handlePageChange(1);
                           }}
                         >
-                          {page}
+                          1
                         </button>
-                      );
-                    })}
+                        {currentPage > 3 && <span className="join-item btn btn-sm sm:btn-md btn-disabled">...</span>}
+
+                        {/* 現在のページ周辺を表示 */}
+                        {Array.from({ length: Math.min(3, totalPages - 2) }, (_, index) => {
+                          const page = Math.max(2, Math.min(totalPages - 1, currentPage - 1 + index));
+                          const isActive = page === currentPage;
+
+                          // 最初のページと最後のページは既に表示済みなので除外
+                          if (page === 1 || page === totalPages) return null;
+
+                          return (
+                            <button
+                              key={page}
+                              className={`join-item btn btn-sm sm:btn-md ${isActive ? 'btn-active' : ''}`}
+                              onClick={() => {
+                                handlePageChange(page);
+                              }}
+                            >
+                              {page}
+                            </button>
+                          );
+                        })}
+
+                        {currentPage < totalPages - 2 && (
+                          <span className="join-item btn btn-sm sm:btn-md btn-disabled">...</span>
+                        )}
+                        <button
+                          className={`join-item btn btn-sm sm:btn-md ${currentPage === totalPages ? 'btn-active' : ''}`}
+                          onClick={() => {
+                            handlePageChange(totalPages);
+                          }}
+                        >
+                          {totalPages}
+                        </button>
+                      </>
+                    )}
 
                     <button
-                      className={`join-item btn ${currentPage === totalPages ? 'btn-disabled' : ''}`}
+                      className={`join-item btn btn-sm sm:btn-md ${currentPage === totalPages ? 'btn-disabled' : ''}`}
                       onClick={() => {
                         handlePageChange(currentPage + 1);
                       }}
