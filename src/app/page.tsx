@@ -64,9 +64,44 @@ const ArticleCard = ({
 const Home = (): React.ReactElement => {
   const [articles, setArticles] = useState<ArticleMetadata[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<ArticleMetadata[]>([]);
+  const [paginatedArticles, setPaginatedArticles] = useState<ArticleMetadata[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [categories, setCategories] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(true);
+
+  // ページネーション関数
+  const calculatePagination = (
+    articles: ArticleMetadata[],
+    page: number
+  ): { paginatedArticles: ArticleMetadata[]; totalPages: number } => {
+    if (articles.length === 0) {
+      return { paginatedArticles: [], totalPages: 1 };
+    }
+
+    let startIndex: number;
+    let endIndex: number;
+    let totalPages: number;
+
+    if (page === 1) {
+      // 1ページ目は11件表示
+      startIndex = 0;
+      endIndex = 11;
+      const remainingArticles = Math.max(0, articles.length - 11);
+      totalPages = remainingArticles === 0 ? 1 : Math.ceil(remainingArticles / 10) + 1;
+    } else {
+      // 2ページ目以降は10件ずつ
+      startIndex = 11 + (page - 2) * 10;
+      endIndex = startIndex + 10;
+      const remainingArticles = Math.max(0, articles.length - 11);
+      totalPages = remainingArticles === 0 ? 1 : Math.ceil(remainingArticles / 10) + 1;
+    }
+
+    const paginatedArticles = articles.slice(startIndex, endIndex);
+
+    return { paginatedArticles, totalPages };
+  };
 
   useEffect(() => {
     const fetchArticles = async (): Promise<void> => {
@@ -100,10 +135,24 @@ const Home = (): React.ReactElement => {
       const filtered = articles.filter((article) => article.category === selectedCategory);
       setFilteredArticles(filtered);
     }
+    // カテゴリー変更時はページを1にリセット
+    setCurrentPage(1);
   }, [selectedCategory, articles]);
+
+  // filteredArticlesまたはcurrentPageが変更されたときにページネーションを更新
+  useEffect(() => {
+    const { paginatedArticles, totalPages } = calculatePagination(filteredArticles, currentPage);
+    setPaginatedArticles(paginatedArticles);
+    setTotalPages(totalPages);
+  }, [filteredArticles, currentPage]);
 
   const handleCategoryChange = (category: string): void => {
     setSelectedCategory(category);
+  };
+
+  const handlePageChange = (page: number): void => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   if (isLoading) {
@@ -178,12 +227,12 @@ const Home = (): React.ReactElement => {
                 </div>
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   {selectedCategory === 'all'
-                    ? `Displayed All Articles (${filteredArticles.length})`
-                    : `Filtered by "${selectedCategory}" (${filteredArticles.length})`}
+                    ? `Total: ${filteredArticles.length} articles (Page ${currentPage}/${totalPages})`
+                    : `Filtered by "${selectedCategory}": ${filteredArticles.length} articles (Page ${currentPage}/${totalPages})`}
                 </span>
               </div>
               <div className="flex flex-wrap items-center min-[1170px]:justify-between gap-1 mx-40">
-                {filteredArticles.map((article: ArticleMetadata) => (
+                {paginatedArticles.map((article: ArticleMetadata) => (
                   <ArticleCard
                     key={article.href}
                     imageUrl={article.imageUrl}
@@ -191,7 +240,7 @@ const Home = (): React.ReactElement => {
                     title={article.title}
                     description={article.description}
                     href={article.href}
-                    latest={isLatestArticle(article, filteredArticles)}
+                    latest={currentPage === 1 && isLatestArticle(article, filteredArticles)}
                   />
                 ))}
               </div>
@@ -200,6 +249,50 @@ const Home = (): React.ReactElement => {
                   <div className="text-center">
                     <p className="text-xl text-gray-600 dark:text-gray-400">該当する記事が見つかりませんでした</p>
                     <p className="text-md text-gray-500 dark:text-gray-500 mt-2">別のカテゴリーを選択してください</p>
+                  </div>
+                </div>
+              )}
+
+              {/* ページネーション */}
+              {totalPages > 1 && (
+                <div className="flex justify-center mt-12">
+                  <div className="join">
+                    <button
+                      className={`join-item btn ${currentPage === 1 ? 'btn-disabled' : ''}`}
+                      onClick={() => {
+                        handlePageChange(currentPage - 1);
+                      }}
+                      disabled={currentPage === 1}
+                    >
+                      «
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, index) => {
+                      const page = index + 1;
+                      const isActive = page === currentPage;
+
+                      return (
+                        <button
+                          key={page}
+                          className={`join-item btn ${isActive ? 'btn-active' : ''}`}
+                          onClick={() => {
+                            handlePageChange(page);
+                          }}
+                        >
+                          {page}
+                        </button>
+                      );
+                    })}
+
+                    <button
+                      className={`join-item btn ${currentPage === totalPages ? 'btn-disabled' : ''}`}
+                      onClick={() => {
+                        handlePageChange(currentPage + 1);
+                      }}
+                      disabled={currentPage === totalPages}
+                    >
+                      »
+                    </button>
                   </div>
                 </div>
               )}
